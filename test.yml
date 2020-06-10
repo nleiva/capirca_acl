@@ -1,0 +1,11 @@
+- name: test my new module
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: run the new module
+    my_module:
+      net_os: 'ciscoxr'
+    register: testout
+  - name: dump test output
+    debug:
+      msg: '{{ testout }}'
