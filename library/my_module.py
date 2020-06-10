@@ -83,18 +83,6 @@ def run_module():
         new     = dict(type='bool', required=False, default=False)
     )
 
-    # Is the OS provided by the user a supported OS by Capirca?
-    # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
-    # TODO: Complete this list
-    supported_oses = ["juniper", "cisco", "ciscoasa", "ciscoxr", "fail me"]
-
-    if  module_args['net_os'] not in supported_oses:
-        raise AnsibleFilterError(
-            "The network OS provided ({0}) to capirca_acl filter is not a supported OS in Capirca.".format(
-                module_args['net_os']
-            )
-        )
-
     # seed the result dict in the object
     # we primarily care about changed and state
     # change is if this module effectively modified the target
@@ -115,6 +103,18 @@ def run_module():
         supports_check_mode = True
     )
 
+        # Is the OS provided by the user a supported OS by Capirca?
+    # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
+    # TODO: Complete this list
+    supported_oses = ["juniper", "cisco", "ciscoasa", "ciscoxr", "fail me"]
+
+    if  module.params['net_os'] not in supported_oses:
+        raise AnsibleFilterError(
+            "The network OS provided ({0}) to capirca_acl filter is not a supported OS in Capirca.".format(
+                module.params['net_os']
+            )
+        )
+
     # if the user is working with this module in only check mode we do not
     # want to make any changes to the environment, just return the current
     # state with no modifications
@@ -130,12 +130,16 @@ def run_module():
     }
     '''
 
-    header = Template(header_base)
+    header_template = Template(header_base)
+    header = header_template.safe_substitute(module.params)
 
     defs = naming.Naming('files/def/')
 
     terms = open('files/policies/terms.pol').read()
-    pol = policy.ParsePolicy(header + terms, defs, optimize=True)
+
+    print(header + terms)
+
+    pol = policy.ParsePolicy(header + '\n' + terms, defs, optimize=True)
     # pol = policy.ParsePolicy(GOOD_HEADER_1 + GOOD_TERM_1,
     #                              self.naming)
 
