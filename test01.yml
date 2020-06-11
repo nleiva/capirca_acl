@@ -5,7 +5,7 @@
   
   tasks:
   - name: Run this module to generate an ACL
-    capirca_acl:
+    nleiva.capirca_acl.translate:
       net_os: 'juniper'
     register: testout
   - name: Dump the resulting ACL

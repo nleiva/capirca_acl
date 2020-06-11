@@ -4,21 +4,21 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ANSIBLE_METADATA = {
-    'metadata_version': '0.1',
+    'metadata_version': '0.1.1',
     'status': ['preview'],
     'supported_by': 'community'
 }
 
 DOCUMENTATION = '''
 ---
-module: capirca_acl
+module: translate
 
-short_description: Generate ACL's for different Operating Systems.
+short_description: Generate ACL's for different Operating Systems using Capirca.
 
 version_added: "2.9"
 
 description:
-    - "Generate ACL out of three input files; prefixes, ports and terms."
+    - "Generate an ACL out of three input files; prefixes, ports and terms."
 
 options:
     net_os:
@@ -58,24 +58,24 @@ author:
 EXAMPLES = '''
 # Generate ACL for JunOS and save the output
 - name: Run this module to generate an ACL
-  capirca_acl:
+  nleiva.capirca_acl.translate:
     net_os: 'juniper'
   register: testout
 
 # Generate ACL for Cisco IOS XR and save the output
 - name: Run this module to generate an ACL
-  capirca_acl:
+  nleiva.capirca_acl.translate:
     net_os: 'ciscoxr'
   register: testout
 '''
 
 RETURN = '''
 original_message:
-    description: The original name param that was passed in
+    description: The OPerating System option passed to the module
     type: str
     returned: always
 message:
-    description: The output message that the test module generates
+    description: The ACL that this module generates
     type: str
     returned: always
 '''
@@ -132,7 +132,6 @@ def get_acl(inputs):
         result = juniper.Juniper(pol, EXP_INFO)
     
     return str(result)
-
 
 
 def run_module():

@@ -1,3 +1,10 @@
+.DS_Store
+
 # Galaxy artifacts.
 *.tar.gz
-.DS_Store
+
+# Temp test files
+# test*.yml
+
+# Installed collection
+collections
