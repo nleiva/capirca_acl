@@ -70,15 +70,62 @@ from ansible.errors import AnsibleError, AnsibleFilterError
 from string import Template
 
 from capirca.lib import ciscoxr
+from capirca.lib import ciscoasa
+from capirca.lib import cisco
+from capirca.lib import juniper
+
 from capirca.lib import nacaddr
 from capirca.lib import naming
 from capirca.lib import policy
 
+def get_acl(inputs):
+    """Generates an ACL using Capirca.
+    Args:
+      inputs: Module parameters.
+    Returns:
+      ACL string.
+    """
+    header_base = '''
+    header {
+      comment:: "$comment"
+      target:: $net_os $name
+    }
+    '''
+    result = ""
+
+    # Make sure ACL name doesn't have spaces.
+    inputs['name'] = inputs['name'].replace(" ", "")
+
+    header_template = Template(header_base)
+    header = header_template.safe_substitute(inputs)
+
+    defs = naming.Naming('files/def/')
+    terms = open('files/policies/terms.pol').read()
+    pol = policy.ParsePolicy(header + '\n' + terms, defs, optimize=True)
+
+    # Exp info in weeks
+    EXP_INFO = 2
+
+    if inputs['net_os'] == 'ciscoxr':
+        result = ciscoxr.CiscoXR(pol, EXP_INFO)
+    if inputs['net_os'] == 'cisco':
+        result = cisco.Cisco(pol, EXP_INFO)
+    if inputs['net_os'] == 'ciscoasa':
+        result = ciscoasa.CiscoASA(pol, EXP_INFO)
+    if inputs['net_os'] == 'juniper':
+        result = juniper.Juniper(pol, EXP_INFO)
+    
+    return str(result)
+
+
+
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        net_os  = dict(type='str', required=True),
-        name    = dict(type='str', required=False, default="Default ACL Name"),
+        # TODO: Complete net_os choice list.
+        # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
+        net_os  = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'fail me']),
+        name    = dict(type='str', required=False, default="Default-ACL-Name"),
         comment = dict(type='str', required=False, default="Default Comment"),
         new     = dict(type='bool', required=False, default=False)
     )
@@ -103,18 +150,6 @@ def run_module():
         supports_check_mode = True
     )
 
-        # Is the OS provided by the user a supported OS by Capirca?
-    # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
-    # TODO: Complete this list
-    supported_oses = ["juniper", "cisco", "ciscoasa", "ciscoxr", "fail me"]
-
-    if  module.params['net_os'] not in supported_oses:
-        raise AnsibleFilterError(
-            "The network OS provided ({0}) to capirca_acl filter is not a supported OS in Capirca.".format(
-                module.params['net_os']
-            )
-        )
-
     # if the user is working with this module in only check mode we do not
     # want to make any changes to the environment, just return the current
     # state with no modifications
@@ -123,29 +158,7 @@ def run_module():
 
     # manipulate or modify the state as needed (this is going to be the
     # part where your module will do what it needs to do)
-    header_base = '''
-    header {
-      comment:: $comment
-      target:: $net_os $name
-    }
-    '''
-
-    header_template = Template(header_base)
-    header = header_template.safe_substitute(module.params)
-
-    defs = naming.Naming('files/def/')
-
-    terms = open('files/policies/terms.pol').read()
-
-    print(header + terms)
-
-    pol = policy.ParsePolicy(header + '\n' + terms, defs, optimize=True)
-    # pol = policy.ParsePolicy(GOOD_HEADER_1 + GOOD_TERM_1,
-    #                              self.naming)
-
-    EXP_INFO = 2
-    acl = ciscoxr.CiscoXR(pol, EXP_INFO)
-    print(acl)
+    acl = get_acl(module.params)
 
     result['original_message'] = module.params['net_os']
     result['message'] = acl

@@ -4,8 +4,8 @@
   tasks:
   - name: run the new module
     my_module:
-      net_os: 'ciscoxr'
+      net_os: 'juniper'
     register: testout
   - name: dump test output
     debug:
-      msg: '{{ testout }}'
+      msg: '{{ testout.message }}'
