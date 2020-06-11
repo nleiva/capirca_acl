@@ -25,10 +25,10 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.1.0
+    version: 0.1.1S
 ```
 
-### Using modules from the CApirca ACL Collection in your playbooks
+### Using modules from the Capirca ACL Collection in your playbooks
 
 You can either call modules by their Fully Qualified Collection Namespace (FQCN), like `nleiva.capirca_acl.translate`, or you can call modules by their short name if you list the `nleiva.capirca_acl` collection in the playbook's `collections`, like so:
 

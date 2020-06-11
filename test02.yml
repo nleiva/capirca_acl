@@ -7,8 +7,8 @@
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
       net_os: 'ciscoxr'
-      def_folder: "files/def"
-      pol_file: "files/policies/terms.pol"
+      #def_folder: "files/def"
+      #pol_file: "files/policies/terms.pol"
     register: testout
   - name: Dump the resulting ACL
     debug:
