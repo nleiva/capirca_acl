@@ -1,0 +1,23 @@
+---
+authors:
+  - nleiva (https://github.com/nleiva)
+dependencies: {}
+description: Capirca Collection for Ansible.
+documentation: ''
+homepage: ''
+issues: https://github.com/nleiva/capirca_acl/issues
+license_file: LICENSE
+name: capirca_acl
+namespace: nleiva
+readme: README.md
+repository: https://github.com/nleiva/capirca_acl
+tags:
+  - networking
+  - security
+  - acl
+  - cisco
+  - juniper
+version: 0.1.0
+build_ignore:
+  - .DS_Store
+  - '*.tar.gz'

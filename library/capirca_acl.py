@@ -33,6 +33,14 @@ options:
         description:
             - This is a comment/description of the ACL to generate
         required: false
+    def_folder:
+        description:
+            - This is the folder where IP prefixes and Services are defined
+        required: false
+    pol_file:
+        description:
+            - This is the file where your ACL terms are defined
+        required: false
     new:
         description:
             - Control to demo if the result of this module is changed or not
@@ -107,8 +115,8 @@ def get_acl(inputs):
     header_template = Template(header_base)
     header = header_template.safe_substitute(inputs)
 
-    defs = naming.Naming('files/def/')
-    terms = open('files/policies/terms.pol').read()
+    defs = naming.Naming(inputs['def_folder'])
+    terms = open(inputs['pol_file']).read()
     pol = policy.ParsePolicy(header + '\n' + terms, defs, optimize=True)
 
     # Exp info in weeks
@@ -132,10 +140,12 @@ def run_module():
     module_args = dict(
         # TODO: Complete net_os choice list.
         # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
-        net_os  = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'fail me']),
-        name    = dict(type='str', required=False, default="Default-ACL-Name"),
-        comment = dict(type='str', required=False, default="Default Comment"),
-        new     = dict(type='bool', required=False, default=False)
+        net_os      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'fail me']),
+        name        = dict(type='str', required=False, default="Default-ACL-Name"),
+        comment     = dict(type='str', required=False, default="Default Comment"),
+        def_folder  = dict(type='str', required=False, default="files/def"),
+        pol_file    = dict(type='str', required=False, default="files/policies/terms.pol"),
+        new         = dict(type='bool', required=False, default=False)
     )
 
     # seed the result dict in the object
