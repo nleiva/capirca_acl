@@ -1,11 +1,13 @@
-- name: test my new module
+---
+- name: Dump generated ACL for a given OS.
   hosts: localhost
   gather_facts: no
+  
   tasks:
-  - name: run the new module
-    my_module:
+  - name: Run this module to generate an ACL
+    capirca_acl:
       net_os: 'juniper'
     register: testout
-  - name: dump test output
+  - name: Dump the resulting ACL
     debug:
       msg: '{{ testout.message }}'

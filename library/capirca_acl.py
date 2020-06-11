@@ -11,46 +11,54 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = '''
 ---
-module: my_test
+module: capirca_acl
 
-short_description: This is my test module
+short_description: Generate ACL's for different Operating Systems.
 
 version_added: "2.9"
 
 description:
-    - "This is my longer description explaining my test module"
+    - "Generate ACL out of three input files; prefixes, ports and terms."
 
 options:
+    net_os:
+        description:
+            - This is the target Operating System
+        required: true
     name:
         description:
-            - This is the message to send to the test module
-        required: true
+            - This is the name of the ACL to generate
+        required: false
+    comment:
+        description:
+            - This is a comment/description of the ACL to generate
+        required: false
     new:
         description:
             - Control to demo if the result of this module is changed or not
         required: false
 
+requirements:
+    - absl-py
+    - ipaddress
+    - capirca
 author:
     - Nicolas Leiva (@nleiv4)
     
 '''
 
 EXAMPLES = '''
-# Pass in a message
-- name: Test with a message
-  my_test:
-    name: hello world
+# Generate ACL for JunOS and save the output
+- name: Run this module to generate an ACL
+  capirca_acl:
+    net_os: 'juniper'
+  register: testout
 
-# pass in a message and have changed true
-- name: Test with a message and changed output
-  my_test:
-    name: hello world
-    new: true
-
-# fail the module
-- name: Test failure of the module
-  my_test:
-    name: fail me
+# Generate ACL for Cisco IOS XR and save the output
+- name: Run this module to generate an ACL
+  capirca_acl:
+    net_os: 'ciscoxr'
+  register: testout
 '''
 
 RETURN = '''
