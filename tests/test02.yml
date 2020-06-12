@@ -1,4 +1,5 @@
 ---
+# export ANSIBLE_STDOUT_CALLBACK=debug
 - name: Dump generated ACL for a given OS.
   hosts: localhost
   gather_facts: no
@@ -7,9 +8,10 @@
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
       net_os: 'ciscoxr'
-      #def_folder: "files/def"
-      #pol_file: "files/policies/terms.pol"
+      def_folder: "integration/targets/translate/files/def"
+      pol_file: "integration/targets/translate/files/policies/terms.pol"
     register: testout
+  
   - name: Dump the resulting ACL
     debug:
-      msg: '{{ testout.message }}'
+      msg: "{{ testout.message }}"

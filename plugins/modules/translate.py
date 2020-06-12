@@ -142,8 +142,8 @@ def run_module():
         net_os      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'fail me']),
         name        = dict(type='str', required=False, default="Default-ACL-Name"),
         comment     = dict(type='str', required=False, default="Default Comment"),
-        def_folder  = dict(type='str', required=False, default="tests/integration/targets/translate/files/def"),
-        pol_file    = dict(type='str', required=False, default="tests/integration/targets/translate/files/policies/terms.pol"),
+        def_folder  = dict(type='str', required=False, default="integration/targets/translate/files/def"),
+        pol_file    = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),
         new         = dict(type='bool', required=False, default=False)
     )
 
