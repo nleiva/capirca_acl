@@ -1,6 +1,20 @@
-- name: Debug test.
+- name: Setup the testing enviroment
   debug: 
-    msg: "Testing 1, 2, 3."
+    msg: "Copy files, install dependencies and run tests"
+
+- include_tasks: setup_remote_tmp_dir.yml
+
+- name: Copy files to remote location
+  copy:
+    src: files
+    dest: "{{ remote_tmp_dir }}"
+
+- name: Install Python dependencies
+  pip:
+    name:
+      - absl-py
+      - ipaddress
+      - capirca
 
 - name: Run test files
   include_tasks: "test{{ item }}.yml"

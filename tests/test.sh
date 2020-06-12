@@ -18,3 +18,9 @@ cd ../temp/ansible_collections/nleiva/capirca_acl
 ansible-test integration --list-targets
 ansible-test integration --docker ubuntu1804
 cd ../../../..
+
+
+    - copy:
+        src: files
+        dest: "{{ remote_tmp_dir }}"
+"{{ remote_tmp_dir }}/files/setup-crd.yml"
