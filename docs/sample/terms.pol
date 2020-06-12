@@ -1,0 +1,17 @@
+term discard-spoofs {
+  source-address:: RFC1918
+  action:: deny
+}
+
+term accept-to-honestdns {
+  comment:: "Allow name resolution using honestdns."
+  destination-address:: GOOGLE_DNS
+  destination-port:: DNS
+  protocol:: udp
+  action:: accept
+}
+
+term default-permit {
+  comment:: "Allow what's left."
+  action:: accept
+}

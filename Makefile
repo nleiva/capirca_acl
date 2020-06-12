@@ -12,5 +12,8 @@ test-local: ## Run local test cases
 test-remote: ## Run CI/CD test cases
 	tests/remote_test.sh
 
+example: ## Run example
+	tests/local_example.sh
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

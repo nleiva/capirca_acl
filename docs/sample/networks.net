@@ -1,0 +1,9 @@
+RFC1918 = 192.168.0.0/16  # company DMZ networks
+           172.16.0.0/12   # company remote offices
+           10.0.0.0/8      # company production networks
+INTERNAL = RFC1918
+
+GOOGLE_DNS = 8.8.4.4/32               # IPv4 Anycast
+             8.8.8.8/32               # IPv4 Anycast
+             2001:4860:4860::8844/128 # IPv6 Anycast
+             2001:4860:4860::8888/128 # IPv6 Anycast

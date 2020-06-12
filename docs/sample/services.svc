@@ -1,0 +1,2 @@
+DNS = 53/tcp  # transfers
+      53/udp  # queries

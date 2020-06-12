@@ -3,8 +3,6 @@
 # Galaxy artifacts.
 *.tar.gz
 
-# Temp test files
-# test*.yml
-
 # Installed collection
 tests/collections
+docs/collections

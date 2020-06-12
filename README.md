@@ -2,14 +2,14 @@
 
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
-The collection includes a a module to use Caprica from your Ansible playbooks.
+The collection includes a module to use Caprica from your Ansible playbooks.
 
 ## Included content
 
 Click on the name of a plugin or module to view that content's documentation:
 
   - **Modules**:
-    - [translate](translate.md)
+    - [translate](docs/translate.md)
 
 ## Installation and Usage
 
