@@ -5,7 +5,7 @@ services: docker
 env:
   global:
     - COLLECTION_NAMESPACE: nleiva
-    - COLLECTION_NAME: caprica_acl
+    - COLLECTION_NAME: capirca_acl
   matrix:
     - DISTRO: ubuntu1804
       PYTHON_INTERPRETER: /usr/bin/python3
