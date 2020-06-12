@@ -1,5 +1,7 @@
 # Capirca ACL Collection for Ansible
 
+[![Build Status](https://travis-ci.org/nleiva/capirca_acl.svg?branch=master)](https://travis-ci.org/nleiva/capirca_acl)
+
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
 The collection includes a module to use Caprica from your Ansible playbooks.
@@ -25,7 +27,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.1.1S
+    version: 0.1.1
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks

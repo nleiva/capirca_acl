@@ -1,0 +1,26 @@
+---
+language: python
+services: docker
+
+env:
+  global:
+    - COLLECTION_NAMESPACE: nleiva
+    - COLLECTION_NAME: caprica_acl
+  matrix:
+    - DISTRO: ubuntu1804
+      PYTHON_INTERPRETER: /usr/bin/python3
+
+install:
+  # Install Ansible.
+  - pip install absl-py ipaddress capirca ansible
+
+before_script:
+  # Move the collection into the required path to make ansible-test work.
+  - cd ../
+  - mkdir -p ansible_collections/$COLLECTION_NAMESPACE
+  - mv $COLLECTION_NAME ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+  - cd ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+
+script:
+  # Run tests.
+  - ansible-test integration --docker $DISTRO --python-interpreter $PYTHON_INTERPRETER
