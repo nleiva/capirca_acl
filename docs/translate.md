@@ -76,7 +76,10 @@ See the files we use for testing [here](../tests/integration/targets/translate/f
 
 ### pol_file
 
-[Term Definition Format](https://github.com/google/capirca/wiki/Capirca-design#term-definition-format)
+The policy file will consist of terms, comments, and other directives. Terms are the specific rules relating a variety of properties such as source/destination addresses, protocols, ports, actions, etc. See [Term Definition Format](https://github.com/google/capirca/wiki/Capirca-design#term-definition-format) for details. 
+
+This is Policy example:
+
 
 ```ruby
 term discard-spoofs {
@@ -100,7 +103,9 @@ term default-permit {
 
 ## In action
 
-```
+You can run this module with the examples files displayed in here by running `make example` after cloning the repo. Make sure you meet the requirement like having `absl-py`, `ipaddress`, and `capirca` libraries installed.
+
+```swift
 ⇨  make example
 ...
 
@@ -144,4 +149,83 @@ exit
 
 PLAY RECAP ******************************************************************************************************************************************************************
 localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+If you switched the `net_os` to `juniper`.
+
+```yaml
+  tasks:
+  - name: Run this module to generate an ACL
+    nleiva.capirca_acl.translate:
+      net_os: 'junos'
+      def_folder: "sample"
+      pol_file: "sample/terms.pol"
+    register: testout
+...
+```
+
+Then the output would be:
+
+```swift
+...
+TASK [Dump the resulting ACL] ***********************************************************************************************************************************************
+ok: [localhost] => {}
+
+MSG:
+
+firewall {
+    family inet {
+        replace:
+        /*
+        ** $Id:$
+        ** $Date:$
+        ** $Revision:$
+        **
+        ** Default Comment
+        */
+        filter Default-ACL-Name {
+            interface-specific;
+            term discard-spoofs {
+                from {
+                    source-address {
+                        /* company production networks */
+                        10.0.0.0/8;
+                        /* company remote offices */
+                        172.16.0.0/12;
+                        /* company DMZ networks */
+                        192.168.0.0/16;
+                    }
+                }
+                then {
+                    discard;
+                }
+            }
+            /*
+            ** Allow name resolution using honestdns.
+            */
+            term accept-to-honestdns {
+                from {
+                    destination-address {
+                        /* IPv4 Anycast */
+                        8.8.4.4/32;
+                        /* IPv4 Anycast */
+                        8.8.8.8/32;
+                    }
+                    protocol udp;
+                    destination-port 53;
+                }
+                then accept;
+            }
+            /*
+            ** Allow what's left.
+            */
+            term default-permit {
+                then accept;
+            }
+        }
+    }
+}
+
+...
+
 ```
