@@ -12,7 +12,7 @@ ansible-playbook test${TEST}.yml -vvv
 
 # Test Collection
 mkdir ../temp
-ansible-galaxy collection install nleiva-capirca_acl-${VERSION}.tar.gz -p ../temp
+ansible-galaxy collection install --force nleiva-capirca_acl-${VERSION}.tar.gz -p ../temp
 cd ../temp/ansible_collections/nleiva/capirca_acl
 # https://github.com/ansible/ansible/pull/69341
 ansible-test integration --list-targets

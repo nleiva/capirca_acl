@@ -1,0 +1,9 @@
+---
+- name: Run this module to generate an ACL
+  nleiva.capirca_acl.translate:
+    net_os: 'juniper'
+  register: testout
+
+- name: Dump the resulting ACL
+  debug:
+    msg: '{{ testout.message }}'
