@@ -43,6 +43,22 @@ Is the target platform, one of:
 - `cisco`: Cisco IOS
 - `ciscoasa`: Cisco ASA FW
 - `ciscoxr`: Cisco IOS XR
+- `brocade`: Brocade Network OS
+- `arista`: Arista EOS
+- `aruba`: Aruba ArubaOS
+- `ipset`: Linux ipset
+- `iptables`: Linux iptables 
+- `nsxv`: VMWare NSX
+- `packetfilter`: OpenBSD PF
+- `pcap`: PCAP filter
+- `speedway`: Speedway produces Iptables filtering output that is suitable for passing to the 'iptables-restore' command
+- `srx`: Juniper SRX
+- `srxlo`: SRX Loopback is a stateless Juniper ACL with minor changes.
+- `windows_advfirewall`: Windows Advanced Firewall
+- `nftables`: Linux nftables
+- `gce`: Google Compute Engine
+- `paloalto`: Palo Alto PAN-OS
+- `cloudarmor`: Google Cloud Armor
 
 We are extending the module to support all platforms supported by [Capirca](https://github.com/google/capirca).
 

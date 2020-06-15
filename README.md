@@ -56,6 +56,16 @@ You can either call modules by their Fully Qualified Collection Namespace (FQCN)
         msg: '{{ testout.message }}'
 ```
 
+See [translate](docs/translate.md) for mode details.
+
+## Pushing a new version
+
+Example
+
+```
+TAG=0.1.2 make build
+```
+
 ## License
 
 GNU General Public License v3.0 or later

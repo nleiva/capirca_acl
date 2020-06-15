@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 ANSIBLE_METADATA = {
-    'metadata_version': '0.1.1',
+    'metadata_version': '0.1.2',
     'status': ['preview'],
     'supported_by': 'community'
 }
@@ -81,18 +81,17 @@ message:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.errors import AnsibleError, AnsibleFilterError
+# from ansible.errors import AnsibleError
 
 from string import Template
 
-from capirca.lib import ciscoxr
-from capirca.lib import ciscoasa
-from capirca.lib import cisco
-from capirca.lib import juniper
+from capirca.lib import ciscoxr, ciscoasa, cisco, juniper, brocade, arista, aruba, ipset
+from capirca.lib import iptables, nsxv, packetfilter, pcap, speedway, junipersrx, srxlo
+from capirca.lib import windows_advfirewall, nftables, gce, paloaltofw, cloudarmor
 
-from capirca.lib import nacaddr
-from capirca.lib import naming
-from capirca.lib import policy
+from capirca.lib import naming, policy
+#from capirca.lib import nacaddr
+
 
 def get_acl(inputs):
     """Generates an ACL using Capirca.
@@ -122,15 +121,49 @@ def get_acl(inputs):
     # Exp info in weeks
     EXP_INFO = 2
 
-    if inputs['net_os'] == 'ciscoxr':
-        result = ciscoxr.CiscoXR(pol, EXP_INFO)
+    # List from https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
+    # Does Python have a Switch statement?
+    if inputs['net_os'] == 'juniper':
+        result = juniper.Juniper(pol, EXP_INFO)
     if inputs['net_os'] == 'cisco':
         result = cisco.Cisco(pol, EXP_INFO)
     if inputs['net_os'] == 'ciscoasa':
         result = ciscoasa.CiscoASA(pol, EXP_INFO)
-    if inputs['net_os'] == 'juniper':
-        result = juniper.Juniper(pol, EXP_INFO)
-    
+    if inputs['net_os'] == 'brocade':
+        result = brocade.Brocade(pol, EXP_INFO)
+    if inputs['net_os'] == 'arista':
+        result = arista.Arista(pol, EXP_INFO)
+    if inputs['net_os'] == 'aruba':
+        result = aruba.Aruba(pol, EXP_INFO)
+    if inputs['net_os'] == 'ipset':
+        result = ipset.Ipset(pol, EXP_INFO)
+    if inputs['net_os'] == 'iptables':
+        result = iptables.Iptables(pol, EXP_INFO)
+    if inputs['net_os'] == 'nsxv':
+        result = nsxv.Nsxv(pol, EXP_INFO)
+    if inputs['net_os'] == 'packetfilter':
+        result = packetfilter.PacketFilter(pol, EXP_INFO)
+    if inputs['net_os'] == 'pcap':
+        result = pcap.PcapFilter(pol, EXP_INFO)
+    if inputs['net_os'] == 'speedway':
+        result = speedway.Speedway(pol, EXP_INFO)
+    if inputs['net_os'] == 'srx':
+        result = junipersrx.JuniperSRX(pol, EXP_INFO)
+    if inputs['net_os'] == 'srxlo':
+        result = srxlo.SRXlo(pol, EXP_INFO)
+    if inputs['net_os'] == 'windows_advfirewall':
+        result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)   
+    if inputs['net_os'] == 'ciscoxr':
+        result = ciscoxr.CiscoXR(pol, EXP_INFO)
+    if inputs['net_os'] == 'nftables':
+        result = nftables.Nftables(pol, EXP_INFO)
+    if inputs['net_os'] == 'gce':
+        result = gce.GCE(pol, EXP_INFO)
+    if inputs['net_os'] == 'paloalto':
+        result = paloaltofw.PaloAltoFW(pol, EXP_INFO)  
+    if inputs['net_os'] == 'cloudarmor':
+        result = cloudarmor.CloudArmor(pol, EXP_INFO)  
+
     return str(result)
 
 
@@ -139,7 +172,11 @@ def run_module():
     module_args = dict(
         # TODO: Complete net_os choice list.
         # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
-        net_os      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'fail me']),
+        net_os      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
+                                                                'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
+                                                                'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
+                                                                'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
+                                                                'fail me']),
         name        = dict(type='str', required=False, default="Default-ACL-Name"),
         comment     = dict(type='str', required=False, default="Default Comment"),
         def_folder  = dict(type='str', required=False, default="integration/targets/translate/files/def"),
@@ -195,8 +232,10 @@ def run_module():
     # simple AnsibleModule.exit_json(), passing the key/value results
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()
