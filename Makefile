@@ -1,4 +1,3 @@
-TAG?=0.1.3
 .DEFAULT_GOAL := help
 
 .EXPORT_ALL_VARIABLES:
@@ -13,14 +12,22 @@ test-local: ## Run local test cases
 test-remote: ## Run CI/CD test cases
 	tests/remote_test.sh
 
-build: ## Build and upload to Galaxy. Make sure you TAG correctly
+build: check-env ## Build and upload to Galaxy. Make sure you TAG correctly
 	sed -i "s/version:.*/version: ${TAG}/" galaxy.yml
 	sed -i "s/VERSION=.*/VERSION=${TAG}/" tests/*.sh
 	sed -i "s/'metadata_version':.*/'metadata_version': '${TAG}',/" plugins/modules/translate.py
-	git tag v${TAG}
-	git push origin v${TAG}
+	git add .
+	git commit -m "Bump to version ${TAG}"
+	git tag -a -m "Bump to version ${TAG}" v${TAG}
+	git push --follow-tags
 	ansible-galaxy collection build
 	ansible-galaxy collection publish ./nleiva-capirca_acl-${TAG}.tar.gz
+
+check-env: ## Check if TAG variable is set. Brought to you by https://stackoverflow.com/a/4731504
+ifndef TAG
+	$(error TAG is undefined)
+endif
+	@echo "Version is ${TAG}"
 
 example: ## Run example
 	tests/local_example.sh
