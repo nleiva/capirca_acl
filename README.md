@@ -27,7 +27,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.1.4
+    version: 0.2.0
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks
@@ -47,6 +47,9 @@ You can either call modules by their Fully Qualified Collection Namespace (FQCN)
     - name: Run this module to generate an ACL
       translate:
         platform: 'ciscoxr'
+        filter_options:
+          - ipv6-test-filter
+          - inet6
         def_folder: "files/def"
         pol_file: "files/policies/terms.pol"
       register: testout
@@ -63,7 +66,7 @@ See [translate](docs/translate.md) for mode details.
 Example
 
 ```
-export TAG=0.1.5
+export TAG=0.2.0
 make build
 ```
 

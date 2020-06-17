@@ -120,7 +120,7 @@ Where:
 - `securitygroup`: specifies that the appliedTo should be security group [optional]
 - `securitygroupId`: specifies the Id of the security group [mandatory if securitygroup is given]
 
-#### Group 4
+#### Group 3
 
 |   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
 | ----------- | ------------- | ------------------------------- |----------|----------|

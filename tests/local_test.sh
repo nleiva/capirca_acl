@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.1.4
+VERSION=0.2.0
 END=4
 DST_FOLDER=tests/collections
 
