@@ -3,8 +3,8 @@
   nleiva.capirca_acl.translate:
     platform: 'iptables'
     filter_options: ['INPUT', 'ACCEPT', 'abbreviateterms']
-    def_folder: "integration/targets/translate/files/def"
-    pol_file: "integration/targets/translate/files/policies/terms.pol"
+    def_folder: "{{ remote_tmp_dir }}/files/def"
+    pol_file: "{{ remote_tmp_dir }}/files/policies/terms.pol"
   register: testout
 
 - name: Dump the resulting filter

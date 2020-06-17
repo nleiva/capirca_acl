@@ -24,6 +24,8 @@ Then use it as follwos:
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
       platform: 'ciscoxr'
+      filter_options: 
+        - ACL-Name
       def_folder: "sample"
       pol_file: "sample/terms.pol"
     register: testout
@@ -33,7 +35,7 @@ Then use it as follwos:
       msg: "{{ testout.message }}"
 ```
 
-Where `platform`, `def_folder`, and `pol_file` are inputs that are explained below.
+Where `platform`, `filter_options`, `def_folder`, and `pol_file` are inputs that are explained below.
 
 ### platform
 
@@ -63,7 +65,9 @@ Is the target platform, one of:
 
 ### filter_options
 
-It a list used to define the type of filter, a descriptor or name, direction (if applicable) and format (ipv4/ipv6). The order of the options is relevant and they are platform specific. The following tables describe their purpose. More details in [Capirca Policy-format](https://github.com/google/capirca/wiki/Policy-format).
+It a list used to define the type of filter, a descriptor or name, direction (if applicable) and format (ipv4/ipv6). The order of the options is relevant and they are platform specific. The following tables describe their purpose. More details in [Capirca Policy-format](https://github.com/google/capirca/wiki/Policy-format). We grouped together platforms that have similar options:
+
+#### Group 1
 
 |   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
 | ----------- | ------------- | ------------------------------- |----------|----------|
@@ -78,6 +82,8 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 |`juniper`    | [filter name] | {inet/inet6/bridge} |{dsmo} |{not-interface-specific} |
 |`srxlo`      | [filter name] | {inet/inet6/bridge} |{dsmo} |{not-interface-specific} |
 
+Where:
+
 - `filter name`: defines the name or number of the filter (**NO SPACES**)
 - `extended`: specifies that the output should be an extended access list, and the filter name should be non-numeric. This is the default option.
 - `standard`: specifies that the output should be a standard access list, and the filter name should be numeric and in the range of 1-99.
@@ -91,6 +97,7 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 - `direction`: defines the direction, valid inputs are INGRESS and EGRESS (default:INGRESS) (`gce`).
 - `not-interface-specific`: Toggles "interface-specific" inside of a term.
 
+#### Group 2
 
 |   Platform  |   Option 1    |  Option 2                           | Option 3 | Option 4 |  Option 5  |
 | ----------- | ------------- | ------------------------------------|----------|--------- | ---------- |
@@ -98,6 +105,8 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 |`iptables`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
 |`speedway`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
 |`nsxv`       | {section_name} | {inet/inet6/mixed} | section-id | securitygroup | securitygroupId     |
+
+Where:
 
 - `INPUT`: apply the terms to the input filter.
 - `OUTPUT`: apply the terms to the output filter.
@@ -111,6 +120,7 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 - `securitygroup`: specifies that the appliedTo should be security group [optional]
 - `securitygroupId`: specifies the Id of the security group [mandatory if securitygroup is given]
 
+#### Group 4
 
 |   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
 | ----------- | ------------- | ------------------------------- |----------|----------|
@@ -119,6 +129,8 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 |`nftables`   | [chain name] | [filter name] | [priority] | [inet|inet6] |
 |`packetfilter` | {inet/inet6/mixed} |||
 |`windows_advfirewall` | {out/in} | {inet/inet6/mixed} ||
+
+Where:
 
 - `zone name`: from/to specified zone name.
 - `chain name`: defines the name of the nftables chain.
