@@ -1,0 +1,12 @@
+---
+- name: Run this module to generate an iptables filter
+  nleiva.capirca_acl.translate:
+    platform: 'iptables'
+    filter_options: ['INPUT', 'ACCEPT', 'abbreviateterms']
+    def_folder: "integration/targets/translate/files/def"
+    pol_file: "integration/targets/translate/files/policies/terms.pol"
+  register: testout
+
+- name: Dump the resulting filter
+  debug:
+    msg: "{{ testout.message }}"

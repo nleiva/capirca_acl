@@ -5,9 +5,10 @@
   gather_facts: no
   
   tasks:
-  - name: Run this module to generate an ACL
+  - name: Run this module to generate an Arista ACL
     nleiva.capirca_acl.translate:
-      platform: 'ciscoxr'
+      platform: 'arista'
+      filter_options: ["Test Name"]
       def_folder: "integration/targets/translate/files/def"
       pol_file: "integration/targets/translate/files/policies/terms.pol"
     register: testout

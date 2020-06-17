@@ -25,9 +25,9 @@ options:
         description:
             - This is the target Operating System
         required: true
-    name:
+    filter_options:
         description:
-            - This is the name of the ACL to generate
+            - These are the options for the filter. It varies per platform.
         required: false
     comment:
         description:
@@ -57,21 +57,47 @@ author:
 
 EXAMPLES = '''
 # Generate ACL for JunOS and save the output
-- name: Run this module to generate an ACL
+- name: Run this module to generate an Juniper ACL
   nleiva.capirca_acl.translate:
     platform: 'juniper'
+    filter_options: ["Test Name"]
+    def_folder: "files/def"
+    pol_file: "files/policies/terms.pol"
   register: testout
 
-# Generate ACL for Cisco IOS XR and save the output
-- name: Run this module to generate an ACL
+# Generate ACL for Arista EOS and save the output
+- name: Run this module to generate an Arista ACL
+  nleiva.capirca_acl.translate:
+    platform: 'arista'
+    filter_options: ["Test Name"]
+    def_folder: "files/def"
+    pol_file: "files/policies/terms.pol"
+  register: testout
+
+# Generate an IPv6 ACL for Cisco IOS XR and save the output
+- name: Run this module to generate an Cisco IOS XR ACL
   nleiva.capirca_acl.translate:
     platform: 'ciscoxr'
+    filter_options:
+      - ipv6-test-filter
+      - inet6
+    def_folder: "integration/targets/translate/files/def"
+    pol_file: "integration/targets/translate/files/policies/terms.pol"
+  register: testout
+
+# Generate an iptables and save the output
+- name: Run this module to generate an iptables filter
+  nleiva.capirca_acl.translate:
+    platform: 'iptables'
+    filter_options: ['INPUT', 'ACCEPT', 'abbreviateterms']
+    def_folder: "integration/targets/translate/files/def"
+    pol_file: "integration/targets/translate/files/policies/terms.pol"
   register: testout
 '''
 
 RETURN = '''
 original_message:
-    description: The OPerating System option passed to the module
+    description: The Platfom target passed to the module
     type: str
     returned: always
 message:
@@ -103,13 +129,17 @@ def get_acl(inputs):
     header_base = '''
     header {
       comment:: "$comment"
-      target:: $platform $name
+      target:: $platform $options
     }
     '''
     result = ""
 
-    # Make sure ACL name doesn't have spaces.
-    inputs['name'] = inputs['name'].replace(" ", "")
+    # Make sure Filter name doesn't have any spaces. 
+    # We are assuming the name is the first element of the list.
+    # It isn't the case for all platforms, but shouldn't affect non-name first options (?)
+    inputs['filter_options'][0] = inputs['filter_options'][0].replace(" ", "")
+
+    inputs['options'] = ' '.join([str(elem) for elem in inputs['filter_options']]) 
 
     header_template = Template(header_base)
     header = header_template.safe_substitute(inputs)
@@ -170,16 +200,16 @@ def get_acl(inputs):
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        platform      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
-                                                                'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
-                                                                'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
-                                                                'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
-                                                                'fail me']),
-        name        = dict(type='str', required=False, default="Default-ACL-Name"),
-        comment     = dict(type='str', required=False, default="Default Comment"),
-        def_folder  = dict(type='str', required=False, default="integration/targets/translate/files/def"),
-        pol_file    = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),
-        new         = dict(type='bool', required=False, default=False)
+        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
+                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
+                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
+                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
+                                                                 'fail me']),
+        filter_options  = dict(type='list', required=False, default=['Default-ACL-Name']),
+        comment         = dict(type='str', required=False, default="Default Comment"),
+        def_folder      = dict(type='str', required=False, default="integration/targets/translate/files/def"),
+        pol_file        = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),
+        new             = dict(type='bool', required=False, default=False)
     )
 
     # seed the result dict in the object

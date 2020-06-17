@@ -3,16 +3,16 @@
 - name: Dump generated ACL for a given OS.
   hosts: localhost
   gather_facts: no
- 
+  
   tasks:
-  - name: Run this module to generate an Juniper ACL
+  - name: Run this module to generate an iptables filter
     nleiva.capirca_acl.translate:
-      platform: 'juniper'
-      filter_options: ["Test Name"]
+      platform: 'iptables'
+      filter_options: ['INPUT', 'ACCEPT', 'abbreviateterms']
       def_folder: "integration/targets/translate/files/def"
       pol_file: "integration/targets/translate/files/policies/terms.pol"
     register: testout
-
-  - name: Dump the resulting ACL
+  
+  - name: Dump the resulting filter
     debug:
-      msg: '{{ testout.message }}'
+      msg: "{{ testout.message }}"

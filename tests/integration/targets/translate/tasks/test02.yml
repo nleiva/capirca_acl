@@ -1,7 +1,8 @@
 ---
-- name: Run this module to generate an ACL
+- name: Run this module to generate an Arista ACL
   nleiva.capirca_acl.translate:
-    platform: 'ciscoxr'
+    platform: 'arista'
+    filter_options: ["Test Name"]
     def_folder: "{{ remote_tmp_dir }}/files/def"
     pol_file: "{{ remote_tmp_dir }}/files/policies/terms.pol"
   register: testout

@@ -94,9 +94,9 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 
 |   Platform  |   Option 1    |  Option 2                           | Option 3 | Option 4 |  Option 5  |
 | ----------- | ------------- | ------------------------------------|----------|--------- | ---------- |
-|`ipset`      | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
-|`iptables`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
-|`speedway`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
+|`ipset`      | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
+|`iptables`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
+|`speedway`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
 |`nsxv`       | {section_name} | {inet/inet6/mixed} | section-id | securitygroup | securitygroupId     |
 
 - `INPUT`: apply the terms to the input filter.
@@ -105,7 +105,7 @@ It a list used to define the type of filter, a descriptor or name, direction (if
 - `custom`: create the terms under a custom filter name, which must then be linked/jumped to from one of the default filters (e.g. `iptables -A input -j custom`)
 - `ACCEPT`: specifies that the default policy on the filter should be 'accept'.
 - `DROP`: specifies that the default policy on the filter should be to 'drop'.
-- `truncatenames`: specifies to abbreviate term names if necessary (see lib/iptables.py:CheckTerMLength for abbreviation table)
+- `abbreviateterms`: specifies to abbreviate term names if necessary (see lib/iptables.py:CheckTerMLength for abbreviation table)
 - `nostate`: specifies to produce 'stateless' filter output (e.g. no connection tracking)
 - `sectionId`: specifies the Id for the section [optional]
 - `securitygroup`: specifies that the appliedTo should be security group [optional]
@@ -147,7 +147,7 @@ It a list used to define the type of filter, a descriptor or name, direction (if
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
       platform: 'iptables'
-      filter_options: ['INPUT', 'ACCEPT', 'truncatenames']
+      filter_options: ['INPUT', 'ACCEPT', 'abbreviateterms']
       def_folder: "sample"
       pol_file: "sample/terms.pol"
     register: testout
