@@ -21,7 +21,7 @@ description:
     - "Generate an ACL out of three input files; prefixes, ports and terms."
 
 options:
-    net_os:
+    platform:
         description:
             - This is the target Operating System
         required: true
@@ -59,13 +59,13 @@ EXAMPLES = '''
 # Generate ACL for JunOS and save the output
 - name: Run this module to generate an ACL
   nleiva.capirca_acl.translate:
-    net_os: 'juniper'
+    platform: 'juniper'
   register: testout
 
 # Generate ACL for Cisco IOS XR and save the output
 - name: Run this module to generate an ACL
   nleiva.capirca_acl.translate:
-    net_os: 'ciscoxr'
+    platform: 'ciscoxr'
   register: testout
 '''
 
@@ -103,7 +103,7 @@ def get_acl(inputs):
     header_base = '''
     header {
       comment:: "$comment"
-      target:: $net_os $name
+      target:: $platform $name
     }
     '''
     result = ""
@@ -123,45 +123,45 @@ def get_acl(inputs):
 
     # List from https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
     # Does Python have a Switch statement?
-    if inputs['net_os'] == 'juniper':
+    if inputs['platform'] == 'juniper':
         result = juniper.Juniper(pol, EXP_INFO)
-    if inputs['net_os'] == 'cisco':
+    if inputs['platform'] == 'cisco':
         result = cisco.Cisco(pol, EXP_INFO)
-    if inputs['net_os'] == 'ciscoasa':
+    if inputs['platform'] == 'ciscoasa':
         result = ciscoasa.CiscoASA(pol, EXP_INFO)
-    if inputs['net_os'] == 'brocade':
+    if inputs['platform'] == 'brocade':
         result = brocade.Brocade(pol, EXP_INFO)
-    if inputs['net_os'] == 'arista':
+    if inputs['platform'] == 'arista':
         result = arista.Arista(pol, EXP_INFO)
-    if inputs['net_os'] == 'aruba':
+    if inputs['platform'] == 'aruba':
         result = aruba.Aruba(pol, EXP_INFO)
-    if inputs['net_os'] == 'ipset':
+    if inputs['platform'] == 'ipset':
         result = ipset.Ipset(pol, EXP_INFO)
-    if inputs['net_os'] == 'iptables':
+    if inputs['platform'] == 'iptables':
         result = iptables.Iptables(pol, EXP_INFO)
-    if inputs['net_os'] == 'nsxv':
+    if inputs['platform'] == 'nsxv':
         result = nsxv.Nsxv(pol, EXP_INFO)
-    if inputs['net_os'] == 'packetfilter':
+    if inputs['platform'] == 'packetfilter':
         result = packetfilter.PacketFilter(pol, EXP_INFO)
-    if inputs['net_os'] == 'pcap':
+    if inputs['platform'] == 'pcap':
         result = pcap.PcapFilter(pol, EXP_INFO)
-    if inputs['net_os'] == 'speedway':
+    if inputs['platform'] == 'speedway':
         result = speedway.Speedway(pol, EXP_INFO)
-    if inputs['net_os'] == 'srx':
+    if inputs['platform'] == 'srx':
         result = junipersrx.JuniperSRX(pol, EXP_INFO)
-    if inputs['net_os'] == 'srxlo':
+    if inputs['platform'] == 'srxlo':
         result = srxlo.SRXlo(pol, EXP_INFO)
-    if inputs['net_os'] == 'windows_advfirewall':
+    if inputs['platform'] == 'windows_advfirewall':
         result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)   
-    if inputs['net_os'] == 'ciscoxr':
+    if inputs['platform'] == 'ciscoxr':
         result = ciscoxr.CiscoXR(pol, EXP_INFO)
-    if inputs['net_os'] == 'nftables':
+    if inputs['platform'] == 'nftables':
         result = nftables.Nftables(pol, EXP_INFO)
-    if inputs['net_os'] == 'gce':
+    if inputs['platform'] == 'gce':
         result = gce.GCE(pol, EXP_INFO)
-    if inputs['net_os'] == 'paloalto':
+    if inputs['platform'] == 'paloalto':
         result = paloaltofw.PaloAltoFW(pol, EXP_INFO)  
-    if inputs['net_os'] == 'cloudarmor':
+    if inputs['platform'] == 'cloudarmor':
         result = cloudarmor.CloudArmor(pol, EXP_INFO)  
 
     return str(result)
@@ -170,9 +170,7 @@ def get_acl(inputs):
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        # TODO: Complete net_os choice list.
-        # Supported Capirca OSes: https://github.com/google/capirca/blob/master/capirca/aclgen.py#L202
-        net_os      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
+        platform      = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
@@ -214,7 +212,7 @@ def run_module():
     # part where your module will do what it needs to do)
     acl = get_acl(module.params)
 
-    result['original_message'] = module.params['net_os']
+    result['original_message'] = module.params['platform']
     result['message'] = acl
 
     # use whatever logic you need to determine whether or not this module
@@ -225,7 +223,7 @@ def run_module():
     # during the execution of the module, if there is an exception or a
     # conditional state that effectively causes a failure, run
     # AnsibleModule.fail_json() to pass in the message and the result
-    if module.params['net_os'] == 'fail me':
+    if module.params['platform'] == 'fail me':
         module.fail_json(msg='You requested this to fail', **result)
 
     # in the event of a successful module execution, you will want to

@@ -7,7 +7,7 @@
   tasks:
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
-      net_os: 'ciscoxr'
+      platform: 'ciscoxr'
       def_folder: "sample"
       pol_file: "sample/terms.pol"
     register: testout

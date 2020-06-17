@@ -1,7 +1,7 @@
 ---
 - name: Run this module to generate an ACL
   nleiva.capirca_acl.translate:
-    net_os: 'juniper'
+    platform: 'juniper'
     def_folder: "{{ remote_tmp_dir }}/files/def"
     pol_file: "{{ remote_tmp_dir }}/files/policies/terms.pol"
   register: testout

@@ -23,7 +23,7 @@ Then use it as follwos:
   tasks:
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
-      net_os: 'ciscoxr'
+      platform: 'ciscoxr'
       def_folder: "sample"
       pol_file: "sample/terms.pol"
     register: testout
@@ -33,34 +33,125 @@ Then use it as follwos:
       msg: "{{ testout.message }}"
 ```
 
-Where `net_os`, `def_folder`, and `pol_file` are inputs that are explained below.
+Where `platform`, `def_folder`, and `pol_file` are inputs that are explained below.
 
-### net_os
+### platform
 
 Is the target platform, one of:
 
-- `juniper`: Juniper JunOS
+- `arista`: Arista EOS
+- `aruba`: Aruba ArubaOS
+- `brocade`: Brocade Network OS
 - `cisco`: Cisco IOS
 - `ciscoasa`: Cisco ASA FW
 - `ciscoxr`: Cisco IOS XR
-- `brocade`: Brocade Network OS
-- `arista`: Arista EOS
-- `aruba`: Aruba ArubaOS
+- `cloudarmor`: Google Cloud Armor
+- `gce`: Google Compute Engine
 - `ipset`: Linux ipset
-- `iptables`: Linux iptables 
+- `iptables`: Linux iptables
+- `juniper`: Juniper JunOS
+- `srx`: Juniper SRX
+- `nftables`: Linux nftables
 - `nsxv`: VMWare NSX
 - `packetfilter`: OpenBSD PF
+- `paloalto`: Palo Alto PAN-OS
 - `pcap`: PCAP filter
 - `speedway`: Speedway produces Iptables filtering output that is suitable for passing to the 'iptables-restore' command
-- `srx`: Juniper SRX
 - `srxlo`: SRX Loopback is a stateless Juniper ACL with minor changes.
 - `windows_advfirewall`: Windows Advanced Firewall
-- `nftables`: Linux nftables
-- `gce`: Google Compute Engine
-- `paloalto`: Palo Alto PAN-OS
-- `cloudarmor`: Google Cloud Armor
 
-We are extending the module to support all platforms supported by [Capirca](https://github.com/google/capirca).
+
+### filter_options
+
+It a list used to define the type of filter, a descriptor or name, direction (if applicable) and format (ipv4/ipv6). The order of the options is relevant and they are platform specific. The following tables describe their purpose. More details in [Capirca Policy-format](https://github.com/google/capirca/wiki/Policy-format).
+
+|   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
+| ----------- | ------------- | ------------------------------- |----------|----------|
+|`arista`     | [filter name] | {standard/extended/object-group/inet6} |||
+|`brocade`    | [filter name] | {extended/standard/object-group/inet6/mixed} |{dsmo} ||
+|`cisco`      | [filter name] | {extended/standard/object-group/inet6/mixed} |{dsmo} ||
+|`ciscoxr`    | [filter name] | {extended/standard/object-group/inet6/mixed} |{dsmo} ||
+|`ciscoasa`   | [filter name] | |||
+|`aruba`      | [filter name] | {ipv6} |||
+|`gce`        | [filter name] | [direction] |||
+|`pcap`       | [filter name] | [direction] |||
+|`juniper`    | [filter name] | {inet/inet6/bridge} |{dsmo} |{not-interface-specific} |
+|`srxlo`      | [filter name] | {inet/inet6/bridge} |{dsmo} |{not-interface-specific} |
+
+- `filter name`: defines the name or number of the filter (**NO SPACES**)
+- `extended`: specifies that the output should be an extended access list, and the filter name should be non-numeric. This is the default option.
+- `standard`: specifies that the output should be a standard access list, and the filter name should be numeric and in the range of 1-99.
+- `object-group`: specifies this is an extended access list, and that object-groups should be used for ports and addresses.
+- `inet`: specifies the output should be for IPv4 only filters. This is the default format.
+- `inet6`: specifies the output be for IPv6 only filters.
+- `mixed`: specifies output will include both IPv6 and IPv4 filters.
+- `dsmo`: Enable discontinuous subnet mask summarization.
+- `ipv6`: specifies the output be for IPv6 only filters (`aruba`).
+- `bridge`: specifies the output should render a Juniper bridge filter.
+- `direction`: defines the direction, valid inputs are INGRESS and EGRESS (default:INGRESS) (`gce`).
+- `not-interface-specific`: Toggles "interface-specific" inside of a term.
+
+
+|   Platform  |   Option 1    |  Option 2                           | Option 3 | Option 4 |  Option 5  |
+| ----------- | ------------- | ------------------------------------|----------|--------- | ---------- |
+|`ipset`      | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
+|`iptables`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
+|`speedway`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{truncatenames} |{nostate} |{inet/inet6} |
+|`nsxv`       | {section_name} | {inet/inet6/mixed} | section-id | securitygroup | securitygroupId     |
+
+- `INPUT`: apply the terms to the input filter.
+- `OUTPUT`: apply the terms to the output filter.
+- `FORWARD`: apply the terms to the forwarding filter.
+- `custom`: create the terms under a custom filter name, which must then be linked/jumped to from one of the default filters (e.g. `iptables -A input -j custom`)
+- `ACCEPT`: specifies that the default policy on the filter should be 'accept'.
+- `DROP`: specifies that the default policy on the filter should be to 'drop'.
+- `truncatenames`: specifies to abbreviate term names if necessary (see lib/iptables.py:CheckTerMLength for abbreviation table)
+- `nostate`: specifies to produce 'stateless' filter output (e.g. no connection tracking)
+- `sectionId`: specifies the Id for the section [optional]
+- `securitygroup`: specifies that the appliedTo should be security group [optional]
+- `securitygroupId`: specifies the Id of the security group [mandatory if securitygroup is given]
+
+
+|   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
+| ----------- | ------------- | ------------------------------- |----------|----------|
+|`srx`        | from-zone [zone name] | to-zone [zone name] | {inet} ||
+|`paloalto`   | from-zone [zone name] | to-zone [zone name] |||
+|`nftables`   | [chain name] | [filter name] | [priority] | [inet|inet6] |
+|`packetfilter` | {inet/inet6/mixed} |||
+|`windows_advfirewall` | {out/in} | {inet/inet6/mixed} ||
+
+- `zone name`: from/to specified zone name.
+- `chain name`: defines the name of the nftables chain.
+- `priority`: defines the integer of the nftables chain priority.
+- `out`: Specifies that the direction of packet flow is out. (default)
+- `in`: Specifies that the direction of packet flow is in.
+
+
+#### Examples
+
+```yaml
+  tasks:
+  - name: Run this module to generate an ACL
+    nleiva.capirca_acl.translate:
+      platform: 'ciscoxr'
+      filter_options:
+        - ipv6-test-filter
+        - inet6
+      def_folder: "sample"
+      pol_file: "sample/terms.pol"
+    register: testout
+```
+
+```yaml
+  tasks:
+  - name: Run this module to generate an ACL
+    nleiva.capirca_acl.translate:
+      platform: 'iptables'
+      filter_options: ['INPUT', 'ACCEPT', 'truncatenames']
+      def_folder: "sample"
+      pol_file: "sample/terms.pol"
+    register: testout
+```
 
 ### def_folder
 
@@ -167,13 +258,13 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-If you switched the `net_os` to `juniper`.
+If you switched the `platform` to `juniper`.
 
 ```yaml
   tasks:
   - name: Run this module to generate an ACL
     nleiva.capirca_acl.translate:
-      net_os: 'junos'
+      platform: 'junos'
       def_folder: "sample"
       pol_file: "sample/terms.pol"
     register: testout
@@ -244,4 +335,32 @@ firewall {
 
 ...
 
+```
+
+## Capirca resources
+
+- [Multi-Platform ACL Generation and Testing](https://rvasec.com/slides/2013/Watson-Capirca.pdf)
+- [Wiki](https://github.com/google/capirca/wiki)
+
+## Port to Service mapping
+
+A good place to start is `/etc/services`.
+
+```python
+⇨  cat /etc/services
+...
+chargen         19/tcp          ttytst source
+chargen         19/udp          ttytst source
+ftp-data        20/tcp
+ftp             21/udp          fsp fspd
+ssh             22/tcp                          # The Secure Shell (SSH) Protocol
+ssh             22/udp                          # The Secure Shell (SSH) Protocol
+telnet          23/tcp
+telnet          23/udp
+lmtp            24/tcp                          # LMTP Mail Delivery
+lmtp            24/udp                          # LMTP Mail Delivery
+smtp            25/tcp          mail
+smtp            25/udp          mail
+time            37/tcp          timserver
+...
 ```
