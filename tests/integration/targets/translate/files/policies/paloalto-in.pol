@@ -1,0 +1,28 @@
+################
+### RULEBASE ###
+################
+
+# NOTE: makes sure zone names correspond to those specified in your firewall setup
+# https://raw.githubusercontent.com/google/capirca/master/policies/pol/sample_paloalto.pol
+
+term ping-gdns{
+  source-address:: INTERNAL
+  destination-address:: GOOGLE_DNS
+  protocol:: icmp
+  action:: accept
+}
+
+term dns-gdns{
+  source-address:: INTERNAL
+  destination-address:: GOOGLE_DNS
+  destination-port:: DNS
+  protocol:: tcp
+  action:: accept
+}
+
+term allow-web-outbound{
+  source-address:: INTERNAL
+  destination-port:: WEB_SERVICES
+  protocol:: tcp
+  action:: accept
+}

@@ -18,4 +18,4 @@
 
 - name: Run test files
   include_tasks: "test{{ item }}.yml"
-  with_sequence: count=6 format="%02d"
+  with_sequence: count=7 format="%02d"

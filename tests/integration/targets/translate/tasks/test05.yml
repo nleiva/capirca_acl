@@ -1,14 +1,28 @@
 ---
-- name: Run this module to generate a Palo Alto ACL
+- name: Run this module to generate a Palo Alto ACL (Internal to External)
   nleiva.capirca_acl.translate:
     platform: 'paloalto'
     filter_options:
       - internal
       - external
     def_folder: "{{ remote_tmp_dir }}/files/def"
-    pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto.pol"
-  register: testout
+    pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto-in.pol"
+  register: testout_in
 
-- name: Dump the resulting filter
+- name: Run this module to generate a Palo Alto ACL (External to Internal)
+  nleiva.capirca_acl.translate:
+    platform: 'paloalto'
+    filter_options:
+      - external
+      - internal
+    def_folder: "{{ remote_tmp_dir }}/files/def"
+    pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto-ex.pol"
+  register: testout_ex
+
+- name: Dump the resulting Internal to External filter
   debug:
-    msg: "{{ testout.message }}"
+    msg: "{{ testout_in.message }}"
+
+- name: Dump the resulting External to Internal filter
+  debug:
+    msg: "{{ testout_ex.message }}"

@@ -1,0 +1,22 @@
+#
+# Sample EGRESS policy
+# If source-tag is included, it maps to targetTags in the GCP Egress rule
+#
+# https://raw.githubusercontent.com/google/capirca/master/policies/pol/sample_gce.pol
+
+term test-egress-address {
+  comment:: "Outbound to Mail Server"
+  protocol:: tcp
+  destination-port:: SMTP
+  destination-address:: MAIL_SERVERS
+  action:: accept
+}
+
+term test-egress-tag {
+  comment:: "Outbound to RFC1918"
+  protocol:: tcp
+  destination-port:: SSH
+  destination-address:: PUBLIC_NAT
+  source-tag:: webserver
+  action:: accept
+}

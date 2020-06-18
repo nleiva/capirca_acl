@@ -3,6 +3,8 @@
 - name: Dump generated ACL for a given OS.
   hosts: localhost
   gather_facts: no
+  vars:
+    - remote_tmp_dir: "integration/targets/translate"
   
   tasks:
   - name: Run this module to generate a Palo Alto ACL
@@ -11,10 +13,24 @@
       filter_options:
         - internal
         - external
-      def_folder: "integration/targets/translate/files/def"
-      pol_file: "integration/targets/translate/files/policies/paloalto.pol"
-    register: testout
-  
-  - name: Dump the resulting ACL
+      def_folder: "{{ remote_tmp_dir }}/files/def"
+      pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto-in.pol"
+    register: testout_in
+
+  - name: Run this module to generate a Palo Alto ACL (External to Internal)
+    nleiva.capirca_acl.translate:
+      platform: 'paloalto'
+      filter_options:
+        - external
+        - internal
+      def_folder: "{{ remote_tmp_dir }}/files/def"
+      pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto-ex.pol"
+    register: testout_ex
+
+  - name: Dump the resulting Internal to External filter
     debug:
-      msg: "{{ testout.message }}"
+      msg: "{{ testout_in.message }}"
+
+  - name: Dump the resulting External to Internal filter
+    debug:
+      msg: "{{ testout_ex.message }}"

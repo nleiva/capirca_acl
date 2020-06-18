@@ -3,14 +3,16 @@
 - name: Dump generated ACL for a given OS.
   hosts: localhost
   gather_facts: no
+  vars:
+    - remote_tmp_dir: "integration/targets/translate"
  
   tasks:
   - name: Run this module to generate an Juniper ACL
     nleiva.capirca_acl.translate:
       platform: 'juniper'
       filter_options: ["Test Name"]
-      def_folder: "integration/targets/translate/files/def"
-      pol_file: "integration/targets/translate/files/policies/terms.pol"
+      def_folder: "{{ remote_tmp_dir }}/files/def"
+      pol_file: "{{ remote_tmp_dir }}/files/policies/terms.pol"
     register: testout
 
   - name: Dump the resulting ACL

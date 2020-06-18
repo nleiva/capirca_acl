@@ -1,0 +1,37 @@
+---
+# export ANSIBLE_STDOUT_CALLBACK=debug
+- name: Dump generated ACL for a given OS.
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - remote_tmp_dir: "integration/targets/translate"
+  
+  tasks:
+  - name: Run this module to generate a GCE INGRESS filter
+    nleiva.capirca_acl.translate:
+      platform: 'gce'
+      filter_options:
+        - global/networks/default
+      comment: "this is a sample policy to generate GCE filter"
+      def_folder: "{{ remote_tmp_dir }}/files/def"
+      pol_file: "{{ remote_tmp_dir }}/files/policies/gce-in.pol"
+    register: testout_in
+
+  - name: Run this module to generate a GCE EGRESS filter
+    nleiva.capirca_acl.translate:
+      platform: 'gce'
+      filter_options:
+        - EGRESS
+        - global/networks/default
+      comment: "this is a sample policy to generate EGRESS GCE filter"
+      def_folder: "{{ remote_tmp_dir }}/files/def"
+      pol_file: "{{ remote_tmp_dir }}/files/policies/gce-eg.pol"
+    register: testout_eg
+
+  - name: Dump the resulting INGRESS filter
+    debug:
+      msg: "{{ testout_in.message }}"
+
+  - name: Dump the resulting EGRESS filter
+    debug:
+      msg: "{{ testout_eg.message }}"
