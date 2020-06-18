@@ -1,0 +1,14 @@
+---
+- name: Run this module to generate a Palo Alto ACL
+  nleiva.capirca_acl.translate:
+    platform: 'paloalto'
+    filter_options:
+      - internal
+      - external
+    def_folder: "{{ remote_tmp_dir }}/files/def"
+    pol_file: "{{ remote_tmp_dir }}/files/policies/paloalto.pol"
+  register: testout
+
+- name: Dump the resulting filter
+  debug:
+    msg: "{{ testout.message }}"

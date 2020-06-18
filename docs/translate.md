@@ -6,7 +6,7 @@ See [Capirca Design Doc](https://github.com/google/capirca/wiki/Capirca-design) 
 
 ## Requirements
 
-These are the minimun requirement to run this in CentOS/RHEL. Replace `yum` for `apt/get` for Ubuntu.
+These are the minimum requirement to run this in CentOS/RHEL. Replace `yum` for `apt/get` for Ubuntu.
 
 ```bash
 yum install -y python3 python-pip
@@ -17,7 +17,7 @@ pip3 install absl-py ipaddress capirca ansible
 
 You first need to install the Collection with `ansible-galaxy collection install nleiva-capirca_acl`
 
-Then use it as follwos:
+Then use it as follows:
 
 ```yaml
   tasks:
@@ -65,7 +65,7 @@ Is the target platform, one of:
 
 ### filter_options
 
-It a list used to define the type of filter, a descriptor or name, direction (if applicable) and format (ipv4/ipv6). The order of the options is relevant and they are platform specific. The following tables describe their purpose. More details in [Capirca Policy-format](https://github.com/google/capirca/wiki/Policy-format). We grouped together platforms that have similar options:
+It a list used to define the type of filter, a descriptor or name, direction (if applicable) and format (ipv4/ipv6). The order of the options is relevant and they are platform specific. The following tables describe their purpose. More details in [Capirca Policy-format](https://github.com/google/capirca/wiki/Policy-format). We have grouped together platforms that have similar options for the ease of reading:
 
 #### Group 1
 
@@ -104,7 +104,7 @@ Where:
 |`ipset`      | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
 |`iptables`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
 |`speedway`   | [INPUT/OUTPUT/FORWARD/custom] |{ACCEPT/DROP} |{abbreviateterms} |{nostate} |{inet/inet6} |
-|`nsxv`       | {section_name} | {inet/inet6/mixed} | section-id | securitygroup | securitygroupId     |
+
 
 Where:
 
@@ -116,19 +116,18 @@ Where:
 - `DROP`: specifies that the default policy on the filter should be to 'drop'.
 - `abbreviateterms`: specifies to abbreviate term names if necessary (see lib/iptables.py:CheckTerMLength for abbreviation table)
 - `nostate`: specifies to produce 'stateless' filter output (e.g. no connection tracking)
-- `sectionId`: specifies the Id for the section [optional]
-- `securitygroup`: specifies that the appliedTo should be security group [optional]
-- `securitygroupId`: specifies the Id of the security group [mandatory if securitygroup is given]
+
 
 #### Group 3
 
-|   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 |
-| ----------- | ------------- | ------------------------------- |----------|----------|
-|`srx`        | from-zone [zone name] | to-zone [zone name] | {inet} ||
-|`paloalto`   | from-zone [zone name] | to-zone [zone name] |||
-|`nftables`   | [chain name] | [filter name] | [priority] | [inet|inet6] |
-|`packetfilter` | {inet/inet6/mixed} |||
-|`windows_advfirewall` | {out/in} | {inet/inet6/mixed} ||
+|   Platform  |   Option 1    |  Option 2                       | Option 3 | Option 4 | Option 5 |
+| ----------- | ------------- | ------------------------------- |----------|----------|--------- |
+|`srx`        | [from-zone name] | [to-zone name] | {inet} |||
+|`paloalto`   | [from-zone name] | [to-zone name] ||||
+|`nftables`   | [chain name] | [filter name] | [priority] | [inet|inet6] ||
+|`packetfilter` | {inet/inet6/mixed} ||||
+|`windows_advfirewall` | {out/in} | {inet/inet6/mixed} |||
+|`nsxv`       | {section_name} | {inet/inet6/mixed} | section-id | securitygroup | securitygroupId     |
 
 Where:
 
@@ -137,6 +136,9 @@ Where:
 - `priority`: defines the integer of the nftables chain priority.
 - `out`: Specifies that the direction of packet flow is out. (default)
 - `in`: Specifies that the direction of packet flow is in.
+- `sectionId`: specifies the Id for the section [optional]
+- `securitygroup`: specifies that the appliedTo should be security group [optional]
+- `securitygroupId`: specifies the Id of the security group [mandatory if securitygroup is given]
 
 
 #### Examples

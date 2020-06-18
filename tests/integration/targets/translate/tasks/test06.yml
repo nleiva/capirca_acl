@@ -1,0 +1,17 @@
+---
+- name: Run this module to generate a Juniper SRX filter
+  nleiva.capirca_acl.translate:
+    platform: 'srx'
+    filter_options:
+      - Untrust
+      - DMZ
+    comment: "from zone Untrust to zone DMZ"
+    def_folder: "{{ remote_tmp_dir }}/files/def"
+    pol_file: "{{ remote_tmp_dir }}/files/policies/srx.pol"
+  register: testout
+
+- name: Dump the resulting filter
+  debug:
+    msg: "{{ testout.message }}"
+
+    

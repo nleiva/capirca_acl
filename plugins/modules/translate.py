@@ -107,7 +107,7 @@ message:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-# from ansible.errors import AnsibleError
+from ansible.errors import AnsibleError
 
 from string import Template
 
@@ -134,12 +134,21 @@ def get_acl(inputs):
     '''
     result = ""
 
-    # Make sure Filter name doesn't have any spaces. 
-    # We are assuming the name is the first element of the list.
-    # It isn't the case for all platforms, but shouldn't affect non-name first options (?)
-    inputs['filter_options'][0] = inputs['filter_options'][0].replace(" ", "")
+    # Create copy of input options removing any spaces
+    inputs['options_copy'] = [str(elem).replace(" ", "") for elem in inputs['filter_options']]
 
-    inputs['options'] = ' '.join([str(elem) for elem in inputs['filter_options']]) 
+    # Add from/to-zone to 'paloalto' and 'srx'.
+    if inputs['platform'] in ('paloalto' 'srx'):
+        if len(inputs['options_copy']) < 2:
+            raise AnsibleError(
+                "The number of options for {0} is less than 2.format(inputs['platform'])"
+                )
+
+        inputs['options_copy'][0] = "from-zone " + inputs['options_copy'][0]
+        inputs['options_copy'][1] = "to-zone " + inputs['options_copy'][1]
+
+    # Create option string for header
+    inputs['options'] = ' '.join([str(elem) for elem in inputs['options_copy']]) 
 
     header_template = Template(header_base)
     header = header_template.safe_substitute(inputs)
@@ -155,43 +164,43 @@ def get_acl(inputs):
     # Does Python have a Switch statement?
     if inputs['platform'] == 'juniper':
         result = juniper.Juniper(pol, EXP_INFO)
-    if inputs['platform'] == 'cisco':
+    elif inputs['platform'] == 'cisco':
         result = cisco.Cisco(pol, EXP_INFO)
-    if inputs['platform'] == 'ciscoasa':
+    elif inputs['platform'] == 'ciscoasa':
         result = ciscoasa.CiscoASA(pol, EXP_INFO)
-    if inputs['platform'] == 'brocade':
+    elif inputs['platform'] == 'brocade':
         result = brocade.Brocade(pol, EXP_INFO)
-    if inputs['platform'] == 'arista':
+    elif inputs['platform'] == 'arista':
         result = arista.Arista(pol, EXP_INFO)
-    if inputs['platform'] == 'aruba':
+    elif inputs['platform'] == 'aruba':
         result = aruba.Aruba(pol, EXP_INFO)
-    if inputs['platform'] == 'ipset':
+    elif inputs['platform'] == 'ipset':
         result = ipset.Ipset(pol, EXP_INFO)
-    if inputs['platform'] == 'iptables':
+    elif inputs['platform'] == 'iptables':
         result = iptables.Iptables(pol, EXP_INFO)
-    if inputs['platform'] == 'nsxv':
+    elif inputs['platform'] == 'nsxv':
         result = nsxv.Nsxv(pol, EXP_INFO)
-    if inputs['platform'] == 'packetfilter':
+    elif inputs['platform'] == 'packetfilter':
         result = packetfilter.PacketFilter(pol, EXP_INFO)
-    if inputs['platform'] == 'pcap':
+    elif inputs['platform'] == 'pcap':
         result = pcap.PcapFilter(pol, EXP_INFO)
-    if inputs['platform'] == 'speedway':
+    elif inputs['platform'] == 'speedway':
         result = speedway.Speedway(pol, EXP_INFO)
-    if inputs['platform'] == 'srx':
+    elif inputs['platform'] == 'srx':
         result = junipersrx.JuniperSRX(pol, EXP_INFO)
-    if inputs['platform'] == 'srxlo':
+    elif inputs['platform'] == 'srxlo':
         result = srxlo.SRXlo(pol, EXP_INFO)
-    if inputs['platform'] == 'windows_advfirewall':
+    elif inputs['platform'] == 'windows_advfirewall':
         result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)   
-    if inputs['platform'] == 'ciscoxr':
+    elif inputs['platform'] == 'ciscoxr':
         result = ciscoxr.CiscoXR(pol, EXP_INFO)
-    if inputs['platform'] == 'nftables':
+    elif inputs['platform'] == 'nftables':
         result = nftables.Nftables(pol, EXP_INFO)
-    if inputs['platform'] == 'gce':
+    elif inputs['platform'] == 'gce':
         result = gce.GCE(pol, EXP_INFO)
-    if inputs['platform'] == 'paloalto':
+    elif inputs['platform'] == 'paloalto':
         result = paloaltofw.PaloAltoFW(pol, EXP_INFO)  
-    if inputs['platform'] == 'cloudarmor':
+    elif inputs['platform'] == 'cloudarmor':
         result = cloudarmor.CloudArmor(pol, EXP_INFO)  
 
     return str(result)
