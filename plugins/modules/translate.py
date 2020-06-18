@@ -141,7 +141,7 @@ def get_acl(inputs):
     if inputs['platform'] in ('paloalto' 'srx'):
         if len(inputs['options_copy']) < 2:
             raise AnsibleError(
-                "The number of options for {0} is less than 2.format(inputs['platform'])"
+                "The number of options for {0} is less than 2".format(inputs['platform'])
                 )
 
         inputs['options_copy'][0] = "from-zone " + inputs['options_copy'][0]
