@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.2.1
+VERSION=0.2.2
 IMAGE=ubuntu1804
 
 ansible-galaxy collection build --force
