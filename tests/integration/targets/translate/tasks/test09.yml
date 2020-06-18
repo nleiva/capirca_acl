@@ -1,0 +1,20 @@
+---
+- name: Run this module to generate a NSXV filter
+  nleiva.capirca_acl.translate:
+    platform: 'nsxv'
+    filter_options:
+      - sample_nsxv_filter
+      - mixed
+      - 1234
+      - securitygroup
+      - securitygroupId
+    comment: "Sample NSXV filter"
+    def_folder: "{{ remote_tmp_dir }}/files/def"
+    pol_file: "{{ remote_tmp_dir }}/files/policies/nsxv.pol"
+  register: testout
+
+- name: Dump the resulting filter
+  debug:
+    msg: "{{ testout.message }}"
+
+    
