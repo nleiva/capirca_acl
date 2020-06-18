@@ -1,0 +1,31 @@
+# https://raw.githubusercontent.com/google/capirca/master/policies/pol/sample_speedway.pol
+
+term base-allow-lo0-out {
+  comment:: "Allow all loopback communications"
+  verbatim::  speedway "-A OUTPUT -o lo -j ACCEPT"
+}
+term base-allow-est-out {
+  option:: established
+  action:: accept
+}
+term base-allow-dns-query-out {
+  protocol:: udp
+  destination-port:: DNS
+  action:: accept
+}
+term base-allow-icmp-out {
+  protocol:: icmp
+  action:: accept
+}
+term base-traceroute-out {
+  protocol:: udp
+  destination-port:: TRACEROUTE
+  source-port:: HIGH_PORTS
+  action:: accept
+}
+term base-allow-ssh-out {
+  destination-address:: INTERNAL
+  protocol:: tcp
+  destination-port:: SSH
+  action:: accept
+}

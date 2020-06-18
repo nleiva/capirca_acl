@@ -1,0 +1,5 @@
+# https://raw.githubusercontent.com/google/capirca/master/policies/pol/sample_speedway.pol
+
+term base-forwarding-deny {
+  action:: reject
+}

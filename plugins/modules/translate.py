@@ -97,7 +97,7 @@ EXAMPLES = '''
 
 RETURN = '''
 original_message:
-    description: The Platfom target passed to the module
+    description: The Platform target passed to the module
     type: str
     returned: always
 message:

@@ -4,7 +4,7 @@
 
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
-The collection includes a module ([translate](docs/translate.md)) to use Capirca from your Ansible playbooks.
+This collection includes a module ([translate](docs/translate.md)) to use [Capirca](https://github.com/google/capirca) from your Ansible playbooks.
 
 ## Included content
 
@@ -17,7 +17,7 @@ Click on the name of a plugin or module to view that content's documentation:
 
 ### Installing the Collection from Ansible Galaxy
 
-Before using this collection, you need to install it with the Ansible Galaxy CLI:
+Before using this collection, you need to install it with the Ansible [Galaxy](https://galaxy.ansible.com/nleiva/capirca_acl) CLI:
 
     ansible-galaxy collection install nleiva.capirca_acl
 
@@ -27,7 +27,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.2.0
+    version: 0.2.2
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks
@@ -61,14 +61,27 @@ You can either call modules by their Fully Qualified Collection Namespace (FQCN)
 
 See [translate](docs/translate.md) for mode details.
 
-## Pushing a new version
+## Publishing a new version
 
-Example
+We first need to make sure the test cases run successfully:
+
+```bash
+make test-local
+```
+
+Then we need to TAG the version with a version number greater than the latest one:
 
 ```
-export TAG=0.2.0
+export TAG=0.2.3
+```
+
+And finally build:
+
+```
 make build
 ```
+
+It will end up in [Galaxy](https://galaxy.ansible.com/nleiva/capirca_acl)
 
 ## License
 
