@@ -27,7 +27,8 @@ check-env: ## Check if TAG variable is set. Brought to you by https://stackoverf
 ifndef TAG
 	$(error TAG is undefined)
 endif
-	@echo "Version is ${TAG}"
+	@echo "TAG is ${TAG}"
+	@tests/version.sh
 
 example: ## Run example
 	tests/local_example.sh
