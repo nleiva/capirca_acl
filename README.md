@@ -27,7 +27,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.2.2
+    version: 0.2.3
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks
@@ -61,7 +61,35 @@ You can either call modules by their Fully Qualified Collection Namespace (FQCN)
 
 See [translate](docs/translate.md) for mode details.
 
-## Publishing a new version
+### Run an example
+
+The example documented in [translate](docs/translate.md) can be run with:
+
+```bash
+make example
+```
+
+## Testing and Development
+
+### Testing with `ansible-test`
+
+The `tests` directory contains configuration for running sanity and integration tests using [`ansible-test`](https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html).
+
+You can run the collection's test suites with the command:
+
+```bash
+make test-remote
+```
+
+### Testing locally with ansible
+
+You can run the collection's test suites without [`ansible-test`](https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html) with the command:
+
+```bash
+make test-local
+```
+
+## Publishing New Versions
 
 We first need to make sure the test cases run successfully:
 
@@ -81,7 +109,14 @@ And finally build:
 make build
 ```
 
-It will end up in [Galaxy](https://galaxy.ansible.com/nleiva/capirca_acl)
+It will end up in [Capirca Collection Galaxy page](https://galaxy.ansible.com/nleiva/capirca_acl) if you have access to the namespace.
+
+## More Information
+
+For more information about [Capirca](https://github.com/google/capirca), join the `#capirca` channel on [NetworkToCode Slack](https://networktocode.slack.com/), and browse the resources in the [Capirca Wiki](https://github.com/google/capirca/wiki) page.
+
+- [Multi-Platform ACL Generation and Testing](https://rvasec.com/slides/2013/Watson-Capirca.pdf)
+- [Capirca Wiki](https://github.com/google/capirca/wiki)
 
 ## License
 

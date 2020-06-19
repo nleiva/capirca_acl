@@ -7,6 +7,7 @@ new=$TAG
 
  if [ "$(printf '%s\n' "$new" "$current" | sort -V | head -n1)" = "$new" ]; then 
         echo "New version ${new} isn't valid (is less or equal than ${current})"
+        exit 1
  else
         echo "New version ${new} is valid (is greater than ${current})"
  fi

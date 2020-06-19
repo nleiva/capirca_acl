@@ -14,6 +14,8 @@ test-remote: ## Run CI/CD test cases
 
 build: check-env ## Build and upload to Galaxy. Make sure you TAG correctly
 	sed -i "s/version:.*/version: ${TAG}/" galaxy.yml
+	sed -i "s/version:.*/version: ${TAG}/" README.md
+	sed -i "s/TAG=.*/TAG=${TAG}/" README.md
 	sed -i "s/VERSION=.*/VERSION=${TAG}/" tests/*.sh
 	sed -i "s/'metadata_version':.*/'metadata_version': '${TAG}',/" plugins/modules/translate.py
 	git add .

@@ -351,11 +351,6 @@ firewall {
 
 ```
 
-## Capirca resources
-
-- [Multi-Platform ACL Generation and Testing](https://rvasec.com/slides/2013/Watson-Capirca.pdf)
-- [Wiki](https://github.com/google/capirca/wiki)
-
 ## Port to Service mapping
 
 A good place to start is `/etc/services`.
