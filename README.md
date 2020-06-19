@@ -27,7 +27,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.2.3
+    version: 0.2.4
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks
@@ -100,7 +100,7 @@ make test-local
 Then we need to TAG the version with a version number greater than the latest one:
 
 ```
-export TAG=0.2.3
+export TAG=0.2.4
 ```
 
 And finally build:
