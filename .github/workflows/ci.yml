@@ -16,6 +16,12 @@ jobs:
         with:
           path: ansible_collections/nleiva/capirca_acl
 
+      - name: Lint Ansible Playbook
+        uses: ansible/ansible-lint-action@master
+        with:
+          targets: "*.yml"
+          args: ""
+
       - name: Set up Python ${{ matrix.python_version }}
         uses: actions/setup-python@v2
         with:
