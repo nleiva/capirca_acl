@@ -6,9 +6,11 @@ env:
   global:
     - COLLECTION_NAMESPACE: nleiva
     - COLLECTION_NAME: capirca_acl
+    - PYTHON_INTERPRETER: /usr/bin/python3
+  # Supported images: https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html#container-images
   matrix:
     - DISTRO: ubuntu1804
-      PYTHON_INTERPRETER: /usr/bin/python3
+    - DISTRO: fedora29
 
 install:
   # Install Ansible.
