@@ -8,9 +8,10 @@ env:
     - COLLECTION_NAME: capirca_acl
     - PYTHON_INTERPRETER: /usr/bin/python3
   # Supported images: https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html#container-images
+  # https://quay.io/organization/ansible
   matrix:
     - DISTRO: ubuntu1804
-    - DISTRO: fedora29
+    # - DISTRO: fedora:29
 
 install:
   # Install Ansible.
