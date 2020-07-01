@@ -1,4 +1,5 @@
 # https://raw.githubusercontent.com/google/capirca/master/policies/pol/sample_nsxv.pol
+# Expiration on second term updated.
 
 term accept-icmp {
   protocol:: icmp
@@ -10,7 +11,7 @@ term accept-traceroute {
   destination-port:: TRACEROUTE
   protocol:: udp
   action:: accept
-  expiration:: 2001-12-31
+  expiration:: 2025-12-31
   owner:: jeff
 }
 
