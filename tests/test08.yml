@@ -2,52 +2,52 @@
 # export ANSIBLE_STDOUT_CALLBACK=debug
 - name: Dump generated ACL for a given OS.
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
   vars:
     - remote_tmp_dir: "integration/targets/translate"
-  
+
   tasks:
-  - name: Run this module to generate a Speedway iptables INPUT suitable for loading
-    nleiva.capirca_acl.translate:
-      platform: 'speedway'
-      filter_options:
-        - INPUT
-        - DROP
-      comment: "output suitable for loading using the iptables-restore command"
-      def_folder: "{{ remote_tmp_dir }}/files/def"
-      pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-in.pol"
-    register: testout_in
+    - name: Run this module to generate a Speedway iptables INPUT suitable for loading
+      nleiva.capirca_acl.translate:
+        platform: 'speedway'
+        filter_options:
+          - INPUT
+          - DROP
+        comment: "output suitable for loading using the iptables-restore command"
+        def_folder: "{{ remote_tmp_dir }}/files/def"
+        pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-in.pol"
+      register: testout_in
 
-  - name: Run this module to generate a Speedway iptables OUTPUT suitable for loading
-    nleiva.capirca_acl.translate:
-      platform: 'speedway'
-      filter_options:
-        - OUTPUT
-        - DROP
-      comment: "output suitable for loading using the iptables-restore command"
-      def_folder: "{{ remote_tmp_dir }}/files/def"
-      pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-ou.pol"
-    register: testout_ou
+    - name: Run this module to generate a Speedway iptables OUTPUT suitable for loading
+      nleiva.capirca_acl.translate:
+        platform: 'speedway'
+        filter_options:
+          - OUTPUT
+          - DROP
+        comment: "output suitable for loading using the iptables-restore command"
+        def_folder: "{{ remote_tmp_dir }}/files/def"
+        pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-ou.pol"
+      register: testout_ou
 
-  - name: Run this module to generate a Speedway iptables FORWARD suitable for loading
-    nleiva.capirca_acl.translate:
-      platform: 'speedway'
-      filter_options:
-        - FORWARD
-        - DROP
-      comment: "output suitable for loading using the iptables-restore command"
-      def_folder: "{{ remote_tmp_dir }}/files/def"
-      pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-fw.pol"
-    register: testout_fw
+    - name: Run this module to generate a Speedway iptables FORWARD suitable for loading
+      nleiva.capirca_acl.translate:
+        platform: 'speedway'
+        filter_options:
+          - FORWARD
+          - DROP
+        comment: "output suitable for loading using the iptables-restore command"
+        def_folder: "{{ remote_tmp_dir }}/files/def"
+        pol_file: "{{ remote_tmp_dir }}/files/policies/speedway-fw.pol"
+      register: testout_fw
 
-  - name: Dump the resulting INPUT filter
-    debug:
-      msg: "{{ testout_in.message }}"
+    - name: Dump the resulting INPUT filter
+      ansible.builtin.debug:
+        msg: "{{ testout_in.message }}"
 
-  - name: Dump the resulting OUTPUT filter
-    debug:
-      msg: "{{ testout_ou.message }}"
+    - name: Dump the resulting OUTPUT filter
+      ansible.builtin.debug:
+        msg: "{{ testout_ou.message }}"
 
-  - name: Dump the resulting FORWARD filter
-    debug:
-      msg: "{{ testout_fw.message }}"
+    - name: Dump the resulting FORWARD filter
+      ansible.builtin.debug:
+        msg: "{{ testout_fw.message }}"

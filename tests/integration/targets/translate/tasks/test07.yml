@@ -21,9 +21,9 @@
   register: testout_eg
 
 - name: Dump the resulting INGRESS filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_in.message }}"
 
 - name: Dump the resulting EGRESS filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_eg.message }}"

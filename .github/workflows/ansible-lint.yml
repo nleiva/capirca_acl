@@ -1,20 +1,17 @@
-# Ansible Lint for GitHub Action: https://github.com/marketplace/actions/ansible-lint
 name: Ansible Lint
 
-on: [push, pull_request]
+# Controls when the workflow will run
+on: [push, pull_request, workflow_dispatch]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-
+  lint:
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Important: This sets up your GITHUB_WORKSPACE environment variable
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-    - name: Lint Ansible Playbook
-      # replace "master" with any valid ref
-      uses: ansible/ansible-lint-action@master
-      with:
-        targets: "*.yml"
-        args: ""
+      - name: Lint Ansible Playbook
+        uses: ansible/ansible-lint-action@v6.3.0

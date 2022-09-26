@@ -8,5 +8,5 @@
   register: testout
 
 - name: Dump the resulting filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout.message }}"

@@ -20,9 +20,9 @@
   register: testout_ex
 
 - name: Dump the resulting Internal to External filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_in.message }}"
 
 - name: Dump the resulting External to Internal filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_ex.message }}"

@@ -1,16 +1,16 @@
 - name: Setup the testing environment
-  debug: 
+  ansible.builtin.debug:
     msg: "Copy files, install dependencies and run tests"
 
 - include_tasks: setup_remote_tmp_dir.yml
 
 - name: Copy files to remote location
-  copy:
+  ansible.builtin.copy:
     src: files
     dest: "{{ remote_tmp_dir }}"
 
 - name: Install Python dependencies
-  pip:
+  ansible.builtin.pip:
     name:
       - absl-py
       - ipaddress

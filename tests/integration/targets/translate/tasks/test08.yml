@@ -33,13 +33,13 @@
   register: testout_fw
 
 - name: Dump the resulting INPUT filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_in.message }}"
 
 - name: Dump the resulting OUTPUT filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_ou.message }}"
 
 - name: Dump the resulting FORWARD filter
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout_fw.message }}"

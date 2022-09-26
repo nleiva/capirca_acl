@@ -10,5 +10,5 @@
   register: testout
 
 - name: Dump the resulting ACL
-  debug:
+  ansible.builtin.debug:
     msg: "{{ testout.message }}"
