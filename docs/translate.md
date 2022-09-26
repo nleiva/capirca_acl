@@ -15,7 +15,7 @@ pip3 install absl-py ipaddress capirca ansible
 
 ## Examples
 
-You first need to install the Collection with `ansible-galaxy collection install nleiva-capirca_acl`
+You first need to install the Collection with `ansible-galaxy collection install nleiva.capirca_acl`
 
 Then use it as follows:
 
