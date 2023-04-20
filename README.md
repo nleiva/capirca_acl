@@ -4,7 +4,9 @@
 
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
-This collection includes a module ([translate](docs/translate.md)) to use [Capirca](https://github.com/google/capirca) from your Ansible playbooks.
+This collection includes a module ([translate](docs/translate.md)) to use
+[Capirca](https://github.com/google/capirca) from your Ansible playbooks as well as a lookup
+plugins for resolving symbols into networks and services.
 
 ## Included content
 
@@ -12,6 +14,9 @@ Click on the name of a plugin or module to view that content's documentation:
 
   - **Modules**:
     - [translate](docs/translate.md)
+  - **Lookup**:
+    - `network` contains documentation infile
+    - `service` contains documentation infile
 
 ## Installation and Usage
 

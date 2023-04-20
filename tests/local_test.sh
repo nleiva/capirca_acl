@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION=0.2.4
-END=9
+END=10
 DST_FOLDER=tests/collections
 
 export ANSIBLE_STDOUT_CALLBACK=debug
