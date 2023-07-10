@@ -1,6 +1,6 @@
 # Capirca ACL Collection for Ansible
 
-[![Build Status](https://travis-ci.org/nleiva/capirca_acl.svg?branch=master)](https://travis-ci.org/nleiva/capirca_acl) ![CI](https://github.com/nleiva/capirca_acl/workflows/CI/badge.svg)
+![CI](https://github.com/nleiva/capirca_acl/workflows/CI/badge.svg)
 
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
