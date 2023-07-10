@@ -22,8 +22,8 @@ build: check-env ## Build and upload to Galaxy. Make sure you TAG correctly
 	git commit -m "Bump to version ${TAG}"
 	git tag -a -m "Bump to version ${TAG}" v${TAG}
 	git push --follow-tags
-	ansible-galaxy collection build
-	ansible-galaxy collection publish ./nleiva-capirca_acl-${TAG}.tar.gz
+	# ansible-galaxy collection build
+	# ansible-galaxy collection publish ./nleiva-capirca_acl-${TAG}.tar.gz
 
 check-env: ## Check if TAG variable is set. Brought to you by https://stackoverflow.com/a/4731504
 ifndef TAG
