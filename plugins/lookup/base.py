@@ -7,6 +7,7 @@ from ansible.plugins.lookup import LookupBase
 
 class CapircaLookup(LookupBase):
 
+
     def setup(self, *args, **kwargs):
         self._capirca_definitions = None
         for folder in [

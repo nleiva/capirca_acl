@@ -72,6 +72,7 @@ display = Display()
 
 class LookupModule(CapircaLookup):
 
+
     def run(self, args, **kwargs):
         self.setup(*args, **kwargs)
         ret = []

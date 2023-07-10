@@ -51,8 +51,7 @@ requirements:
     - ipaddress
     - capirca
 author:
-    - Nicolas Leiva (@nleiv4)
-    
+    - Nicolas Leiva (@_nleiva)
 '''
 
 EXAMPLES = '''
@@ -116,7 +115,6 @@ from capirca.lib import iptables, nsxv, packetfilter, pcap, speedway, junipersrx
 from capirca.lib import windows_advfirewall, nftables, gce, paloaltofw, cloudarmor
 
 from capirca.lib import naming, policy
-#from capirca.lib import nacaddr
 
 
 def get_acl(inputs):
@@ -148,7 +146,7 @@ def get_acl(inputs):
         inputs['options_copy'][1] = "to-zone " + inputs['options_copy'][1]
 
     # Create option string for header
-    inputs['options'] = ' '.join([str(elem) for elem in inputs['options_copy']]) 
+    inputs['options'] = ' '.join([str(elem) for elem in inputs['options_copy']])
 
     header_template = Template(header_base)
     header = header_template.safe_substitute(inputs)
@@ -191,7 +189,7 @@ def get_acl(inputs):
     elif inputs['platform'] == 'srxlo':
         result = srxlo.SRXlo(pol, EXP_INFO)
     elif inputs['platform'] == 'windows_advfirewall':
-        result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)   
+        result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)
     elif inputs['platform'] == 'ciscoxr':
         result = ciscoxr.CiscoXR(pol, EXP_INFO)
     elif inputs['platform'] == 'nftables':
@@ -199,9 +197,9 @@ def get_acl(inputs):
     elif inputs['platform'] == 'gce':
         result = gce.GCE(pol, EXP_INFO)
     elif inputs['platform'] == 'paloalto':
-        result = paloaltofw.PaloAltoFW(pol, EXP_INFO)  
+        result = paloaltofw.PaloAltoFW(pol, EXP_INFO)
     elif inputs['platform'] == 'cloudarmor':
-        result = cloudarmor.CloudArmor(pol, EXP_INFO)  
+        result = cloudarmor.CloudArmor(pol, EXP_INFO)
 
     return str(result)
 
@@ -209,15 +207,15 @@ def get_acl(inputs):
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
-                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
-                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
-                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
+        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade',
+                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv',
+                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo',
+                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor',
                                                                  'fail me']),
         filter_options  = dict(type='list', required=False, default=['Default-ACL-Name']),
         comment         = dict(type='str', required=False, default="Default Comment"),
         def_folder      = dict(type='str', required=False, default="integration/targets/translate/files/def"),
-        pol_file        = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),
+        pol_file        = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),,
         new             = dict(type='bool', required=False, default=False)
     )
 
