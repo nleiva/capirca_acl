@@ -9,15 +9,15 @@ DOCUMENTATION = '''
       _terms:
         description: list of symbols to lookup
         required: true
-      dir:
+      def_folder:
         description:
-          - give the directory for capirca definitions
-          - the search paths are
-            - variable I(dir)
-            - environment variable I(CAPIRCA_DEF)
-            - dir I(.capirca-def)
-            - dir I(capirca-acl-def)
-            - dir I(~/.capirca-def)
+          - Directory where Capirca definitions are stored
+          - Search paths are:
+            - variable value (def_folder)
+            - environment variable value (CAPIRCA_DEF)
+            - .capirca-def
+            - capirca-acl-def
+            - ~/.capirca-def
         type: path
         env:
           - name: CAPIRCA_DEF

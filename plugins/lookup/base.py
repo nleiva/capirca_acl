@@ -10,7 +10,7 @@ class CapircaLookup(LookupBase):
     def setup(self, *args, **kwargs):
         self._capirca_definitions = None
         for folder in [
-                    kwargs.get('dir'),
+                    kwargs.get('def_folder'),
                     os.environ.get('CAPIRCA_DEF'),
                     '.capirca-def',
                     'capirca-acl-def',
@@ -24,4 +24,4 @@ class CapircaLookup(LookupBase):
                 continue
             break
         if not self._capirca_definitions:
-            raise AnsibleError("could not find a valid a capirca definitions folder. Looked in lookup(dir=), environment CAPIRCA_DEF, .capirca-def, capirca-acl-def, ~/.capirca-def")
+            raise AnsibleError("could not find a valid a capirca definitions folder. Looked in lookup(def_folder=), environment CAPIRCA_DEF, .capirca-def, capirca-acl-def, ~/.capirca-def")
