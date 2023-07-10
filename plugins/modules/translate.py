@@ -207,15 +207,15 @@ def get_acl(inputs):
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade',
-                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv',
-                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo',
-                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor',
+        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
+                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
+                                                                 'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
+                                                                 'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
                                                                  'fail me']),
         filter_options  = dict(type='list', required=False, default=['Default-ACL-Name']),
         comment         = dict(type='str', required=False, default="Default Comment"),
         def_folder      = dict(type='str', required=False, default="integration/targets/translate/files/def"),
-        pol_file        = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),,
+        pol_file        = dict(type='str', required=False, default="integration/targets/translate/files/policies/terms.pol"),
         new             = dict(type='bool', required=False, default=False)
     )
 
