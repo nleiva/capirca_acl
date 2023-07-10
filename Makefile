@@ -13,6 +13,7 @@ test-remote: ## Run CI/CD test cases
 	tests/remote_test.sh
 
 build: check-env ## Build and upload to Galaxy. Make sure you TAG correctly
+	sed -i "s/galaxy_version:.*/galaxy_version: ${TAG}/" .github/workflows/galaxy.yml
 	sed -i "s/version:.*/version: ${TAG}/" galaxy.yml
 	sed -i "s/version:.*/version: ${TAG}/" README.md
 	sed -i "s/TAG=.*/TAG=${TAG}/" README.md
