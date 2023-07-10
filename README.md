@@ -4,7 +4,9 @@
 
 This repo hosts an unofficial [Capirca](https://github.com/google/capirca) Ansible Collection.
 
-This collection includes a module ([translate](docs/translate.md)) to use [Capirca](https://github.com/google/capirca) from your Ansible playbooks.
+This collection includes a module ([translate](docs/translate.md)) to use
+[Capirca](https://github.com/google/capirca) from your Ansible playbooks as well as a lookup
+plugins for resolving symbols into networks and services.
 
 ## Included content
 
@@ -12,6 +14,9 @@ Click on the name of a plugin or module to view that content's documentation:
 
   - **Modules**:
     - [translate](docs/translate.md)
+  - **Plugins**:
+    - `network`: Lookup network definition.
+    - `service`: Lookup service definition.
 
 ## Installation and Usage
 
@@ -27,7 +32,7 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ---
 collections:
   - name: nleiva.capirca_acl
-    version: 0.2.4
+    version: 0.2.5
 ```
 
 ### Using modules from the Capirca ACL Collection in your playbooks
@@ -59,7 +64,23 @@ You can either call modules by their Fully Qualified Collection Namespace (FQCN)
         msg: '{{ testout.message }}'
 ```
 
-See [translate](docs/translate.md) for mode details.
+See [translate](docs/translate.md) for more details.
+
+### Using plugins from the Capirca ACL Collection in your playbooks
+
+```yaml
+    - name: Lookup services
+      ansible.builtin.debug:
+        msg:
+          - "{{ lookup('nleiva.capirca_acl.service', 'HTTP', 'HTTPS', def_folder='tests/integration/targets/translate/files/def') }}"
+    #  '80/tcp,443/tcp'
+
+  - name: Lookup network
+      ansible.builtin.debug:
+        msg:
+          - "{{ lookup('nleiva.capirca_acl.network', 'WEB_SERVERS', def_folder='tests/integration/targets/translate/files/def') }}"
+    # [IPv4('200.1.1.1/32'), IPv4('200.1.1.2/32')]
+```
 
 ### Run an example
 
@@ -81,7 +102,7 @@ You can run the collection's test suites with the command:
 make test-remote
 ```
 
-### Testing locally with ansible
+### Testing locally with Ansible
 
 You can run the collection's test suites without [`ansible-test`](https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html) with the command:
 
@@ -98,18 +119,13 @@ make test-local
 ```
 
 Then we need to TAG the version with a version number greater than the latest one:
-
-```
-export TAG=0.2.4
-```
-
-And finally build:
+And finally, build:
 
 ```
 make build
 ```
 
-It will end up in [Capirca Collection Galaxy page](https://galaxy.ansible.com/nleiva/capirca_acl) if you have access to the namespace.
+It will end up on [Capirca Collection](https://galaxy.ansible.com/nleiva/capirca_acl) Galaxy page](https://galaxy.ansible.com/nleiva/capirca_acl) if you have access to the namespace.
 
 ## More Information
 
