@@ -79,7 +79,7 @@ class LookupModule(CapircaLookup):
         for symbol in args:
             try:
                 for net in self._capirca_definitions.GetNet(symbol):
-                    ret.append(net)
+                    ret.append(str(net))
             except naming.UndefinedAddressError:
                 missing = kwargs.get('missing', 'error')
                 if missing == 'warn':
