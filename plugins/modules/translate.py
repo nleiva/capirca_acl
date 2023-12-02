@@ -110,7 +110,7 @@ from ansible.errors import AnsibleError
 
 from string import Template
 
-from capirca.lib import ciscoxr, ciscoasa, cisco, juniper, brocade, arista, aruba, ipset
+from capirca.lib import cisconx, ciscoxr, ciscoasa, cisco, juniper, brocade, arista, aruba, ipset
 from capirca.lib import iptables, nsxv, packetfilter, pcap, speedway, junipersrx, srxlo
 from capirca.lib import windows_advfirewall, nftables, gce, paloaltofw, cloudarmor
 
@@ -192,6 +192,8 @@ def get_acl(inputs):
         result = windows_advfirewall.WindowsAdvFirewall(pol, EXP_INFO)
     elif inputs['platform'] == 'ciscoxr':
         result = ciscoxr.CiscoXR(pol, EXP_INFO)
+    elif inputs['platform'] == 'cisconx':
+        result = cisconx.CiscoNX(pol, EXP_INFO)
     elif inputs['platform'] == 'nftables':
         result = nftables.Nftables(pol, EXP_INFO)
     elif inputs['platform'] == 'gce':
@@ -207,8 +209,8 @@ def get_acl(inputs):
 def run_module():
     # define available arguments/parameters a user can pass to the module
     module_args = dict(
-        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'brocade', \
-                                                                 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
+        platform        = dict(type='str', required=True, choices=['juniper', 'cisco', 'ciscoasa', 'ciscoxr', 'cisconx', \
+                                                                 'brocade', 'arista', 'aruba', 'ipset', 'iptables', 'nsxv', \
                                                                  'packetfilter', 'pcap', 'speedway', 'srx', 'srxlo', \
                                                                  'windows_advfirewall', 'nftables', 'gce', 'paloalto', 'cloudarmor' \
                                                                  'fail me']),

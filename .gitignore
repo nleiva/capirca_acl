@@ -1,5 +1,8 @@
 .DS_Store
 .vscode
+.env
+.*~
+*~
 
 # Galaxy artifacts.
 *.tar.gz
